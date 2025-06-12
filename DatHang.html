@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Đặt hàng - Lotorio</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Baloo', sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+    .custom-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+        .custom-yellow-text {
+            color: #FFD700;
+        }
+
+    header {
+      background: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    header h1 span {
+      color: #f7c600;
+    }
+
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 8%; /* 👈 đẩy cả hai bên vào 40px */
+      gap: 20px; /* khoảng cách giữa hai khối */
+    }
+
+    .left, .right {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .left {
+      flex: 2;
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .item-info {
+      flex: 1;
+      margin-left: 15px;
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 20px;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .address, .payment {
+      padding: 10px;
+      border-radius: 10px;
+      background: #f0f0f0;
+    }
+
+
+
+    .total {
+      font-size: 24px;
+      font-weight: bold;
+      color: #000;
+      margin: 10px 0;
+    }
+
+    .order-btn {
+      background: #f7c600;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .order-btn:hover {
+      background: #e6b800;
+    }
+    .payment-options {
+  display: flex;
+  gap: 20px;
+}
+
+.payment-option {
+  cursor: pointer;
+  text-align: center;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.payment-option input {
+  display: none;
+}
+
+.payment-option img {
+  width: 64px;
+  height: 64px;
+}
+
+.payment-option input:checked + img,
+.payment-option:hover {
+  border: 2px solid #f7c600;
+  border-radius: 10px;
+  background: #fffbe6;
+}
+
+  </style>
+</head>
+<body>
+
+<!-- Navigation will be injected here -->
+<div id="nav-placeholder"></div>
+<div class="container">
+  <!-- Left column -->
+  <div class="left">
+    <a href="ThucDon.html" class="back-link">← Tóm tắt đơn hàng</a>
+    <div class="add-item">
+      <a href="ThucDon.html" class="back-link">+ Thêm món</a>
+    </div>
+    <div id="order-summary"></div>
+    <textarea placeholder="Gửi thêm yêu cầu cho quán"></textarea>
+  </div>
+
+  <!-- Right column -->
+  <div class="right">
+    <div class="address">
+      <h3>Địa chỉ giao hàng</h3>
+      <p><strong>175 Tây Sơn, Phố Tây Sơn, Đống Đa, Hà Nội, 100000, Việt Nam</strong> ✏️</p>
+      <p>Họ tên: <strong>Nguyễn Văn A</strong></p>
+      <p>SĐT người nhận: <strong>0123456789</strong></p>
+      <p>Thời gian giao: 08:00 đến 21:30 hằng ngày</p>
+    </div>
+
+    <div class="payment">
+  <h3>Phương thức thanh toán</h3>
+  <div class="payment-options">
+    <label class="payment-option">
+      <input type="radio" name="payment" value="cash" checked>
+      <img src="https://img.icons8.com/color/64/cash-in-hand.png" alt="Tiền mặt">
+      <div>Tiền mặt</div>
+    </label>
+    <label class="payment-option">
+      <input type="radio" name="payment" value="bank">
+      <img src="https://img.icons8.com/color/64/bank-cards.png" alt="Chuyển khoản">
+      <div>Chuyển khoản</div>
+    </label>
+  </div>
+</div>
+
+<div id="qr-code" style="display:none; text-align:center; margin-top:10px;">
+    <img src="img/QR-code.jpg" alt="QR chuyển khoản" style="width:180px;">
+    <div>Quét mã để chuyển khoản</div>
+</div>
+
+    <div>
+      <label>Đổi điểm nhận ưu đãi:</label><br>
+      <input type="text" placeholder="Nhập số điểm muốn đổi"> <button>Áp dụng</button><br>
+      <small>Còn 38 xu (1 điểm = 1.000 đ)</small><br>
+      <small>Phí giao hàng: 10.000 đ (1km = 5.000 đ)</small>
+    </div>
+
+    <div class="total">Tổng tiền: </div>
+    <button class="order-btn">Đặt hàng</button>
+  </div>
+</div>
+
+<!-- Footer will be injected here -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load nav and footer using fetch
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading nav:', error));
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+        // Sau khi load nav và footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render order summary
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const orderSummary = document.getElementById('order-summary');
+            let total = 0;
+            let html = '';
+            cart.forEach((item, idx) => {
+                total += item.price * item.qty;
+                html += `
+                <div class="item">
+                    <img src="https://via.placeholder.com/60" alt="${item.name}">
+                    <div class="item-info">
+                        <div>${item.name}</div>
+                        <div>${item.price.toLocaleString()} đ</div>
+                    </div>
+                    <div class="qty-control">
+                        <button onclick="updateQty(${idx}, -1)">-</button>
+                        <span>${item.qty}</span>
+                        <button onclick="updateQty(${idx}, 1)">+</button>
+                        <button onclick="removeItem(${idx})">🗑️</button>
+                    </div>
+                </div>
+                `;
+            });
+            orderSummary.innerHTML = html;
+            document.querySelector('.total').textContent = 'Tổng tiền: ' + total.toLocaleString() + ' đ';
+
+            // Cập nhật lại localStorage khi thay đổi số lượng/xóa
+            window.updateQty = function(idx, delta) {
+                if (cart[idx].qty + delta > 0) {
+                    cart[idx].qty += delta;
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                location.reload();
+            }
+            window.removeItem = function(idx) {
+                cart.splice(idx, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                location.reload();
+            }
+
+            // QR code logic
+            document.querySelectorAll('input[name="payment"]').forEach(input => {
+                input.addEventListener('change', function() {
+                    if (this.value === 'bank') {
+                        document.getElementById('qr-code').style.display = 'block';
+                    } else {
+                        document.getElementById('qr-code').style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        document.querySelector('.order-btn').addEventListener('click', function() {
+            // Lấy giỏ hàng hiện tại
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (cart.length === 0) {
+                alert('Giỏ hàng trống!');
+                return;
+            }
+            // Tính tổng tiền
+            let total = 0;
+            cart.forEach(item => total += item.price * item.qty);
+
+            // Tạo đơn hàng mới
+            const newOrder = {
+                id: Date.now(), // id duy nhất
+                items: cart,
+                total: total,
+                status: 'cho-xac-nhan', // trạng thái mặc định
+                createdAt: new Date().toLocaleString()
+            };
+
+            // Lấy danh sách đơn hàng cũ
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.unshift(newOrder); // thêm đơn mới lên đầu
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Xóa giỏ hàng
+            localStorage.removeItem('cart');
+
+            // Thông báo và chuyển trang
+            alert('Đặt hàng thành công!');
+            window.location.href = 'DonHang.html';
+        });
+        
+    </script>
+
+</body>
+</html>

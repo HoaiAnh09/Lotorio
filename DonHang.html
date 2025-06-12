@@ -10,6 +10,13 @@
         body {
             font-family: 'Baloo', sans-serif;
         }
+        .custom-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+        .custom-yellow-text {
+            color: #FFD700;
+        }
         .orders-container {
             display: flex;
             padding: 30px;
@@ -163,14 +170,14 @@
                 </div>
             </div>
 
-            <!-- Phân trang -->
-            <div class="pagination">
+            Phân trang
+            <!-- <div class="pagination">
                 <button>«</button>
                 <button class="active">1</button>
                 <button>2</button>
                 <button>3</button>
                 <button>»</button>
-            </div>
+            </div> -->
         </main>
     </section>
 
@@ -222,6 +229,61 @@
                 e.preventDefault();
                 const orderId = link.getAttribute('data-id');
                 window.location.href = `ChiTietDH.html?id=${orderId}`;
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const orderItems = document.getElementById('order-items');
+            let html = '';
+            if (orders.length === 0) {
+                html = '<p>Bạn chưa có đơn hàng nào.</p>';
+            } else {
+                orders.forEach(order => {
+                    html += `
+                    <div class="order-card" data-category="${order.status}" data-id="${order.id}">
+                        <div class="order-header">
+                            <strong>Lotorio - Tây Sơn</strong>
+                            <span class="status ${order.status === 'hoan-thanh' ? 'success' : (order.status === 'dang-giao' ? 'shipping' : '')}">
+                                ${order.status === 'hoan-thanh' ? 'Giao hàng thành công' : (order.status === 'dang-giao' ? 'Đang giao' : 'Chờ xác nhận')}
+                            </span>
+                        </div>
+                        <div class="order-body">
+                            <img src="https://via.placeholder.com/80" alt="Món ăn" class="w-20 h-20 object-cover rounded">
+                            <div class="details">
+                                <p>${order.items.map(i => i.name).join(', ')}</p>
+                                <p>x${order.items.reduce((sum, i) => sum + i.qty, 0)}</p>
+                                <a href="ChiTietDH.html?id=${order.id}" class="custom-yellow-text hover:text-yellow-700 view-detail" data-id="${order.id}">Xem thêm</a>
+                            </div>
+                            <div class="price">
+                                <p>Tổng tiền: ${order.total.toLocaleString()}đ</p>
+                                <button class="action-btn">Đánh giá</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                });
+            }
+            orderItems.innerHTML = html;
+
+            // Gán lại sự kiện cho sidebar sau khi render
+            document.querySelectorAll('.sidebar button').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const category = button.getAttribute('data-category') || 'tat-ca';
+                    const orderItems = document.querySelectorAll('.order-card');
+
+                    orderItems.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        if (category === 'tat-ca' || itemCategory === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
             });
         });
     </script>

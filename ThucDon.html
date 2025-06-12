@@ -181,8 +181,8 @@
         document.querySelectorAll('.menu-item').forEach(item => item.classList.add('active'));
 
         // === Cart logic ===
-        let cart = [];
-
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
         function renderCart() {
             const cartItems = document.getElementById('cart-items');
             const cartTotal = document.getElementById('cart-total');
@@ -208,12 +208,14 @@
             } else {
                 cart.push({ name, price, qty: 1 });
             }
+            localStorage.setItem('cart', JSON.stringify(cart));
             renderCart();
             document.getElementById('cart-sidebar').classList.remove('hidden');
         }
 
         function removeFromCart(idx) {
             cart.splice(idx, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
             renderCart();
         }
 
@@ -229,6 +231,9 @@
                 const price = parseInt(item.querySelector('.text-yellow-600').textContent.replace(/\D/g, ''));
                 addToCart(name, price);
             });
+        });
+        document.querySelector('#cart-sidebar a[href="DatHang.html"]').addEventListener('click', function() {
+            localStorage.setItem('cart', JSON.stringify(cart));
         });
     </script>
 </body>
