@@ -179,6 +179,57 @@
 
         // Set default to show all items on page load
         document.querySelectorAll('.menu-item').forEach(item => item.classList.add('active'));
+
+        // === Cart logic ===
+        let cart = [];
+
+        function renderCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                total += item.price * item.qty;
+                cartItems.innerHTML += `
+                    <li class="flex justify-between items-center mb-2">
+                        <span>${item.name} x${item.qty}</span>
+                        <span>${item.price * item.qty}đ</span>
+                        <button onclick="removeFromCart(${idx})" class="text-red-500 ml-2">✕</button>
+                    </li>
+                `;
+            });
+            cartTotal.textContent = total + 'đ';
+        }
+
+        function addToCart(name, price) {
+            const found = cart.find(item => item.name === name);
+            if (found) {
+                found.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            renderCart();
+            document.getElementById('cart-sidebar').classList.remove('hidden');
+        }
+
+        function removeFromCart(idx) {
+            cart.splice(idx, 1);
+            renderCart();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('hidden');
+        }
+
+        // Gán sự kiện cho nút "+"
+        document.querySelectorAll('.menu-item').forEach(item => {
+            const btn = item.querySelector('button');
+            btn.addEventListener('click', () => {
+                const name = item.querySelector('p.font-semibold').textContent;
+                const price = parseInt(item.querySelector('.text-yellow-600').textContent.replace(/\D/g, ''));
+                addToCart(name, price);
+            });
+        });
     </script>
 </body>
 </html>

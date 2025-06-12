@@ -12,7 +12,14 @@
             <input type="text" placeholder="Tìm kiếm" class="border rounded p-2">
             <span class="absolute right-2 top-2 text-gray-500">🔍</span>
         </div>
-        <a href="#" class="custom-yellow-text">🛒</a>
+        <button onclick="toggleCart()" class="custom-yellow-text">🛒</button>
         <span class="text-red-500">🇻🇳</span>
+    </div>
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg p-4 z-50 hidden">
+        <h2 class="text-xl font-bold mb-4">Giỏ hàng</h2>
+        <ul id="cart-items" class="mb-4"></ul>
+        <div class="font-bold mb-4">Tổng: <span id="cart-total">0đ</span></div>
+        <button onclick="toggleCart()" class="custom-yellow text-black py-2 px-4 rounded">Đóng</button>
     </div>
 </header>
