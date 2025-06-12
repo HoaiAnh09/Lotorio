@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotorio - Đơn hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Baloo', sans-serif;
+        }
+        .orders-container {
+            display: flex;
+            padding: 30px;
+        }
+        .sidebar {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            background: #eee;
+            cursor: pointer;
+            text-align: left;
+            border-radius: 8px;
+        }
+        .sidebar button.active {
+            background: #ffd000;
+            font-weight: bold;
+        }
+        .orders-content {
+            flex: 1;
+            padding-left: 30px;
+        }
+        .order-search {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .order-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: white;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+        .status.success {
+            background: #c8f7c5;
+            color: green;
+        }
+        .status.shipping {
+            background: #ffe3a3;
+            color: #aa6b00;
+        }
+        .order-body {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .order-body img {
+            width: 80px;
+            border-radius: 8px;
+        }
+        .details {
+            flex: 1;
+        }
+        .price {
+            text-align: right;
+        }
+        .action-btn {
+            background: #ffd000;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .pagination .active {
+            background: #ffd000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be injected here -->
+    <div id="nav-placeholder"></div>
+
+    <section class="orders-container">
+        <aside class="sidebar">
+            <button class="active" data-category="tat-ca">Tất cả</button>
+            <button data-category="cho-xac-nhan">Chờ xác nhận</button>
+            <button data-category="dang-giao">Đang giao</button>
+            <button data-category="hoan-thanh">Hoàn thành</button>
+        </aside>
+
+        <main class="orders-content">
+            <input type="text" class="order-search" placeholder="Tìm kiếm theo đơn, cửa hàng, món ăn...">
+            
+            <div id="order-items">
+                <!-- Order Item 1 - Giao hàng thành công -->
+                <div class="order-card" data-category="hoan-thanh" data-id="1">
+                    <div class="order-header">
+                        <strong>Lotorio - Tây Sơn</strong>
+                        <span class="status success">Giao hàng thành công</span>
+                    </div>
+                    <div class="order-body">
+                        <img src="https://via.placeholder.com/80" alt="Mỳ Ý" class="w-20 h-20 object-cover rounded">
+                        <div class="details">
+                            <p>Mỳ Ý</p>
+                            <p>x1</p>
+                            <a href="ChiTietDH.html" class="custom-yellow-text hover:text-yellow-700 view-detail" data-id="1">Xem thêm</a>
+                        </div>
+                        <div class="price">
+                            <p>Tổng tiền: 45.000đ</p>
+                            <button class="action-btn">Đánh giá</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Item 2 - Đang giao -->
+                <div class="order-card" data-category="dang-giao" data-id="2">
+                    <div class="order-header">
+                        <strong>Lotorio - Thái Thịnh</strong>
+                        <span class="status shipping">Đang giao</span>
+                    </div>
+                    <div class="order-body">
+                        <img src="https://via.placeholder.com/80" alt="Burger" class="w-20 h-20 object-cover rounded">
+                        <div class="details">
+                            <p>Hamburger phô mai</p>
+                            <p>x1</p>
+                            <a href="ChiTietDH.html" class="custom-yellow-text hover:text-yellow-700 view-detail" data-id="2">Xem thêm</a>
+                        </div>
+                        <div class="price">
+                            <p>Tổng tiền: 50.000đ</p>
+                            <button class="action-btn">Lưu ý</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phân trang -->
+            <div class="pagination">
+                <button>«</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>»</button>
+            </div>
+        </main>
+    </section>
+
+    <!-- Footer will be injected here -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load nav and footer using fetch
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading nav:', error));
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+        // Filter order items based on sidebar selection
+        document.querySelectorAll('.sidebar button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const category = button.getAttribute('data-category') || 'tat-ca';
+                const orderItems = document.querySelectorAll('.order-card');
+
+                orderItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (category === 'tat-ca' || itemCategory === category) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Set default to show all items on page load
+        document.querySelectorAll('.order-card').forEach(item => item.style.display = 'block');
+
+        // Navigate to order detail page with ID
+        document.querySelectorAll('.view-detail').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const orderId = link.getAttribute('data-id');
+                window.location.href = `ChiTietDH.html?id=${orderId}`;
+            });
+        });
+    </script>
+</body>
+</html>

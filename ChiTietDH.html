@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotorio - Chi tiết đơn hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Baloo', sans-serif;
+            background: #f9f9f9;
+        }
+        .detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        .back-link {
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .store-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .order-items {
+            flex: 2;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .order-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+        .order-details {
+            flex: 1;
+        }
+        .order-price {
+            font-weight: bold;
+            margin-left: 20px;
+        }
+        .shipping-info {
+            flex: 1;
+            padding: 15px;
+        }
+        .info-block {
+            background: #fff3cd;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .action-btn {
+            background: #ffd000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .total-section {
+            flex: 2;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .total-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be injected here -->
+    <div id="nav-placeholder"></div>
+
+    <div class="detail-container" id="order-detail-container">
+        <a href="order.html" class="back-link">← Chi tiết đơn hàng</a>
+        <h2 class="store-title" id="store-title"></h2>
+
+        <!-- Order Items (Cột trái) -->
+        <div class="order-items" id="order-items"></div>
+
+        <!-- Shipping Info (Cột phải) -->
+        <div class="shipping-info">
+            <div class="info-block">
+                <p><strong>Địa chỉ giao hàng:</strong> <span id="address"></span></p>
+            </div>
+            <div class="info-block">
+                <p><strong>Thông tin người nhận:</strong> <span id="receiver"></span></p>
+                <p><strong>SĐT người nhận:</strong> <span id="phone"></span></p>
+            </div>
+            <div class="info-block">
+                <p><strong>Thời gian chuẩn bị:</strong> <span id="prep-time"></span></p>
+                <p><strong>Đơn hàng đang được giao:</strong> <span id="shipping-time"></span></p>
+                <p><strong>Nhận hàng tại nhà:</strong> <span id="delivery-time"></span></p>
+                <p><strong>Đơn hàng đã được đặt:</strong> <span id="order-time"></span></p>
+            </div>
+            <div
+    Bàn cân hồ sơ?</button>
+            <button class="action-btn">Liên hệ cửa hàng</button>
+        </div>
+
+        
+    </div>
+
+    <!-- Footer will be injected here -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load nav and footer using fetch
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading nav:', error));
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+        // Sample order data (replace with your data source, e.g., API or database)
+        const orders = {
+            1: {
+                store: "Lotorio - Tây Sơn",
+                items: [
+                    { name: "Burger bò phô mai", qty: 1, price: 69000, image: "https://via.placeholder.com/80" },
+                    { name: "Burger bò đậm", qty: 1, price: 59000, image: "https://via.placeholder.com/80" },
+                    { name: "Pizza truyền thống", qty: 1, price: 109000, image: "https://via.placeholder.com/80" },
+                    { name: "Combo gà khoai", qty: 1, price: 99000, image: "https://via.placeholder.com/80" },
+                    { name: "Cacao nóng", qty: 1, price: 39000, image: "https://via.placeholder.com/80" },
+                ],
+                address: "175 Tây Sơn, Phố Tây Sơn, Đống Đa, Hà Nội, 100000, Việt Nam",
+                receiver: "[Tên người nhận 1]",
+                phone: "[Số điện thoại 1]",
+                prepTime: "4 Thơs",
+                shippingTime: "11:20",
+                deliveryTime: "4 Thơs",
+                orderTime: "10:30",
+                subtotal: 434000,
+                shippingFee: 10000,
+                discount: -10000,
+                total: 434000
+            },
+            2: {
+                store: "Lotorio - Thái Thịnh",
+                items: [
+                    { name: "Hamburger phô mai", qty: 1, price: 50000, image: "https://via.placeholder.com/80" },
+                ],
+                address: "123 Thái Thịnh, Đống Đa, Hà Nội, 100000, Việt Nam",
+                receiver: "[Tên người nhận 2]",
+                phone: "[Số điện thoại 2]",
+                prepTime: "3 Thơs",
+                shippingTime: "10:30",
+                deliveryTime: "3 Thơs",
+                orderTime: "3 Thơs",
+                subtotal: 50000,
+                shippingFee: 10000,
+                discount: -5000,
+                total: 55000
+            }
+        };
+
+        // Get order ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+
+        // Display order details
+        if (orderId && orders[orderId]) {
+            const order = orders[orderId];
+
+            // Set store title
+            document.getElementById('store-title').textContent = order.store;
+
+            // Populate order items
+            const itemsContainer = document.getElementById('order-items');
+            order.items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'order-item';
+                itemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="order-details">
+                        <p>${item.name}</p>
+                        <p>x${item.qty}</p>
+                    </div>
+                    <div class="order-price">${item.price.toLocaleString('vi-VN')}đ</div>
+                `;
+                itemsContainer.appendChild(itemDiv);
+            });
+
+            // Populate shipping info
+            document.getElementById('address').textContent = order.address;
+            document.getElementById('receiver').textContent = order.receiver;
+            document.getElementById('phone').textContent = order.phone;
+            document.getElementById('prep-time').textContent = order.prepTime;
+            document.getElementById('shipping-time').textContent = order.shippingTime;
+            document.getElementById('delivery-time').textContent = order.deliveryTime;
+            document.getElementById('order-time').textContent = order.orderTime;
+            document.getElementById('subtotal').textContent = order.subtotal.toLocaleString('vi-VN') + 'đ';
+            document.getElementById('total').textContent = order.total.toLocaleString('vi-VN') + 'đ';
+        } else {
+            document.getElementById('order-detail-container').innerHTML = '<p>Không tìm thấy đơn hàng.</p>';
+        }
+    </script>
+</body>
+</html>

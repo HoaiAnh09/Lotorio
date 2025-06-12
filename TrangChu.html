@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Baloo', sans-serif;
+        }
+        .hero-bg {
+            background: url('https://via.placeholder.com/1920x600') no-repeat center/cover;
+            background-color: #1a1a1a;
+        }
+        .custom-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+        .custom-yellow-text {
+            color: #FFD700;
+        }
+        .discount-circle {
+            background: radial-gradient(circle, #ff0000, #ff5555);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="nav-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white text-center py-16 relative">
+        <img src="img/posterpng.png" alt="">
+        <div class="inline-block custom-yellow text-black font-semibold py-2 px-4 rounded hover:bg-[#FFC107]">
+            <a href="ThucDon.html">Đặt hàng</a>
+        </div>
+    </section>
+
+    <!-- New Dishes Section -->
+    <section class="py-12">
+        <h2 class="text-2xl font-bold text-center mb-8">CÁC MÓN MỚI</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <img src="img/ga-ran.jpg" alt="Gà rán" class="mx-auto mb-2">
+                <p>Gà rán</p>
+                <p class="custom-yellow-text">30.000đ</p>
+                <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <img src="img/my-y.jpg" alt="Mỳ Ý" class="mx-auto mb-2">
+                <p>Mỳ Ý</p>
+                <p class="custom-yellow-text">45.000đ</p>
+                <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <img src="img/Burger.png" alt="Burger" class="mx-auto mb-2">
+                <p>Burger phô mai</p>
+                <p class="custom-yellow-text">50.000đ</p>
+                <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <img src="img/combo.png" alt="Combo" class="mx-auto mb-2">
+                <p>Combo hề</p>
+                <p class="custom-yellow-text">136.000đ</p>
+                <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Find Restaurant Section -->
+    <section class="py-12 text-center">
+        <h2 class="text-2xl font-bold mb-8">TÌM NHÀ HÀNG GẦN BẠN</h2>
+        <div class="flex justify-center space-x-4">
+            <select class="border p-2 rounded">
+                <option>Chọn tỉnh thành</option>
+            </select>
+            <select class="border p-2 rounded">
+                <option>Chọn quận huyện</option>
+            </select>
+            <button class="custom-yellow text-black py-2 px-4 rounded">Tìm kiếm</button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-12">
+        <h2 class="text-2xl font-bold text-center mb-8">DỊCH VỤ</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <img src="https://via.placeholder.com/150" alt="Sinh nhật" class="mx-auto mb-2">
+                <p>Sinh nhật</p>
+                <button class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <img src="https://via.placeholder.com/150" alt="Đặt đồ giao" class="mx-auto mb-2">
+                <p>Đặt đồ giao</p>
+                <button class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <img src="https://via.placeholder.com/150" alt="Đánh giá" class="mx-auto mb-2">
+                <p>Đánh giá & góp ý</p>
+                <button class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                <img src="https://via.placeholder.com/150" alt="Hỗ trợ" class="mx-auto mb-2">
+                <p>Hỗ trợ</p>
+                <button class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Reviews Section -->
+    <section class="py-12">
+        <h2 class="text-2xl font-bold text-center mb-8">ĐÁNH GIÁ CỦA KHÁCH HÀNG</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto px-4">
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <div class="flex items-center mb-2">
+                    <img src="https://via.placeholder.com/40" alt="Hòai Em" class="rounded-full mr-2">
+                    <p>Hỏi Em</p>
+                </div>
+                <p class="custom-yellow-text">★★★★★</p>
+                <p>"Giao hàng siêu nhanh, đồ ăn ngon, nhân viên thân thiện, cửa hàng sạch sẽ, nói chung là đáng đồng tiền."</p>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <div class="flex items-center mb-2">
+                    <img src="https://via.placeholder.com/40" alt="Huy Trương" class="rounded-full mr-2">
+                    <p>Huy Trường</p>
+                </div>
+                <p class="custom-yellow-text">★★★★★</p>
+                <p>"Gà ngon khủng khiếp luôn, vú gì dẻo hơn đồ nhà huang vi. Minh rát hài lòng với dịch vụ của Lotorio, sẽ tụt tiếp đùng hô."</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load nav and footer using fetch
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading nav:', error));
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+    
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

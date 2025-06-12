@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotorio - Thực đơn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Baloo', sans-serif;
+        }
+        .custom-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+        .custom-yellow-text {
+            color: #FFD700;
+        }
+        .sidebar-btn {
+            background-color: #fff3cd;
+            border: none;
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        .sidebar-btn:hover, .sidebar-btn.active {
+            background-color: #ffe6a7;
+        }
+        .menu-item {
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: none; /* Ẩn mặc định, sẽ hiển thị khi lọc */
+        }
+        .menu-item.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navigation will be injected here -->
+    <div id="nav-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-12 flex">
+        <!-- Sidebar -->
+        <aside class="w-1/5 pr-4">
+            <button class="sidebar-btn" data-category="ga-ran">Gà rán</button>
+            <button class="sidebar-btn" data-category="mi-com">Mỳ ý/Cơm</button>
+            <button class="sidebar-btn" data-category="burger">Burger</button>
+            <button class="sidebar-btn" data-category="do-uong">Đồ uống</button>
+            <button class="sidebar-btn" data-category="mon-trang-mieng">Món tráng miệng</button>
+        </aside>
+
+        <!-- Menu Items -->
+        <section class="w-4/5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="menu-items">
+                <!-- Mì/Com -->
+                <div class="menu-item" data-category="mi-com">
+                    <img src="https://via.placeholder.com/150" alt="Cơm Gà Giòn" class="mx-auto mb-2">
+                    <p class="font-semibold">Cơm Gà Giòn</p>
+                    <p class="text-yellow-600">49.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+                <div class="menu-item" data-category="mi-com">
+                    <img src="https://via.placeholder.com/150" alt="Cơm Gà Sốt Cay" class="mx-auto mb-2">
+                    <p class="font-semibold">Cơm Gà Sốt Cay</p>
+                    <p class="text-yellow-600">69.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+                <div class="menu-item" data-category="mi-com">
+                    <img src="https://via.placeholder.com/150" alt="Cơm Gà Cay + Nước" class="mx-auto mb-2">
+                    <p class="font-semibold">Cơm Gà Cay + Nước</p>
+                    <p class="text-yellow-600">69.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+
+                <!-- Burger -->
+                <div class="menu-item" data-category="burger">
+                    <img src="https://via.placeholder.com/150" alt="Burger Gà" class="mx-auto mb-2">
+                    <p class="font-semibold">Burger Gà</p>
+                    <p class="text-yellow-600">45.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+
+                <!-- Đồ uống -->
+                <div class="menu-item" data-category="do-uong">
+                    <img src="https://via.placeholder.com/150" alt="Pepsi" class="mx-auto mb-2">
+                    <p class="font-semibold">Pepsi</p>
+                    <p class="text-yellow-600">15.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+                <div class="menu-item" data-category="do-uong">
+                    <img src="https://via.placeholder.com/150" alt="Coca" class="mx-auto mb-2">
+                    <p class="font-semibold">Coca</p>
+                    <p class="text-yellow-600">15.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+
+                <!-- Gà rán -->
+                <div class="menu-item" data-category="ga-ran">
+                    <img src="https://via.placeholder.com/150" alt="Combo Gà Khoai" class="mx-auto mb-2">
+                    <p class="font-semibold">Combo Gà Khoai</p>
+                    <p class="text-yellow-600">99.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+                <div class="menu-item" data-category="ga-ran">
+                    <img src="https://via.placeholder.com/150" alt="Gà Rán Giòn" class="mx-auto mb-2">
+                    <p class="font-semibold">Gà Rán Giòn</p>
+                    <p class="text-yellow-600">39.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+                <div class="menu-item" data-category="ga-ran">
+                    <img src="https://via.placeholder.com/150" alt="Gà Rán Sốt Cay" class="mx-auto mb-2">
+                    <p class="font-semibold">Gà Rán Sốt Cay</p>
+                    <p class="text-yellow-600">39.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+
+                <div class="menu-item" data-category="mon-trang-mieng">
+                    <img src="https://via.placeholder.com/150" alt="Kem" class="mx-auto mb-2">
+                    <p class="font-semibold">Kem Vani</p>
+                    <p class="text-yellow-600">10.000đ</p>
+                    <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be injected here -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load nav and footer using fetch
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading nav:', error));
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+        // Filter menu items based on sidebar selection
+        document.querySelectorAll('.sidebar-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const category = button.getAttribute('data-category');
+                const menuItems = document.querySelectorAll('.menu-item');
+
+                menuItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (category === 'all' || itemCategory === category) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // Show all items if no category is selected (e.g., reset)
+                if (!category) {
+                    menuItems.forEach(item => item.classList.add('active'));
+                }
+            });
+        });
+
+        // Set default to show all items on page load
+        document.querySelectorAll('.menu-item').forEach(item => item.classList.add('active'));
+    </script>
+</body>
+</html>
