@@ -410,6 +410,7 @@
     return;
   }
 
+  let total = 0;
   cart.forEach(item => total += item.price * item.qty);
 
   const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
@@ -445,6 +446,9 @@
     });
   }
 });
-</script>
+
+        
+    </script>
+
 </body>
 </html>
