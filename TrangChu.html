@@ -160,24 +160,5 @@
             });
         });
     </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('nav.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav-placeholder').innerHTML = data;
-
-                setupCartToggle();
-            })
-            .catch(error => console.error('Error loading nav:', error));
-    });
-
-    function setupCartToggle() {
-    window.toggleCart = function () {
-        const sidebar = document.getElementById("cart-sidebar");
-        sidebar.classList.toggle("hidden");
-    };
-}
-</script>
 </body>
 </html>

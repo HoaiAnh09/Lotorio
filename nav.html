@@ -1,6 +1,5 @@
-<header class="bg-white shadow-md p-4 flex justify-between items-center relative z-50">
+<header class="bg-white shadow-md p-4 flex justify-between items-center">More actions
     <div class="text-2xl font-bold custom-yellow-text">Lotorio</div>
-    
     <nav class="flex space-x-4">
         <a href="TrangChu.html" class="text-gray-700 hover:custom-yellow-text">Trang chủ</a>
         <a href="ThucDon.html" class="text-gray-700 hover:custom-yellow-text">Thực đơn</a>
@@ -8,42 +7,21 @@
         <a href="DatBan.html" class="text-gray-700 hover:custom-yellow-text">Đặt bàn</a>
         <a href="DonHang.html" class="text-gray-700 hover:custom-yellow-text">Đơn hàng</a>
     </nav>
-    
     <div class="flex items-center space-x-4">
         <div class="relative">
-            <input type="text" placeholder="Tìm kiếm" class="border rounded p-2 pr-8">
+            <input type="text" placeholder="Tìm kiếm" class="border rounded p-2">
             <span class="absolute right-2 top-2 text-gray-500">🔍</span>
         </div>
-        <div class="relative">
-            <button onclick="toggleCart()" class="text-2xl text-gray-700 hover:text-yellow-500">🛒</button>
-            <!-- Giỏ hàng sẽ hiện ngay bên dưới nút 🛒 -->
-            <div id="cart-sidebar" class="absolute top-full right-0 mt-2 w-80 bg-white shadow-lg p-4 z-50 hidden">
-                <button onclick="toggleCart()" class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">×</button>
-                <h2 class="text-xl font-bold mb-4">Giỏ hàng</h2>
-                <ul id="cart-items" class="mb-4">
-                    <li>Chưa có sản phẩm</li>
-                </ul>
-                <div class="font-bold mb-4">Tổng: <span id="cart-total">0đ</span></div>
-                <a href="DatHang.html" class="custom-yellow text-black py-2 px-4 rounded inline-block mt-2">Đặt hàng</a>
-            </div>
-        </div>
+        <button onclick="toggleCart()" class="custom-yellow-text">🛒</button>
         <span class="text-red-500">🇻🇳</span>
     </div>
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg p-4 z-50 hidden">
+        <h2 class="text-xl font-bold mb-4">Giỏ hàng</h2>
+        <ul id="cart-items" class="mb-4"></ul>
+        <div class="font-bold mb-4">Tổng: <span id="cart-total">0đ</span></div>
+        <button onclick="toggleCart()" class="custom-yellow text-black py-2 px-4 rounded">Đóng</button>
+    </div>
+        <a href="DatHang.html" class="custom-yellow text-black py-2 px-4 rounded inline-block">Đặt hàng</a>    
+        </div>
 </header>
-
-<script>
-    function toggleCart() {
-        const cart = document.getElementById("cart-sidebar");
-        cart.classList.toggle("hidden");
-    }
-</script>
-
-<style>
-    .custom-yellow {
-        background-color: #FFD700;
-        color: #1a1a1a;
-    }
-    .custom-yellow-text {
-        color: #FFD700;
-    }
-</style>
