@@ -12,13 +12,7 @@
       margin: 0;
       background: #f5f5f5;
     }
-    .custom-yellow {
-            background-color: #FFD700;
-            color: #1a1a1a;
-        }
-        .custom-yellow-text {
-            color: #FFD700;
-        }
+    
 
     header {
       background: #ffffff;
@@ -202,19 +196,8 @@
 }
 
 
-@keyframes fade-in-down {
-  0% {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.animate-fade-in-down {
-  animation: fade-in-down 0.4s ease-out;
-}
+
+
 
 #success-modal .modal-content {
   background: white;
@@ -226,8 +209,6 @@
   width: 100%;
   animation: fade-in-down 0.4s ease-out;
 }
-
-
   </style>
 </head>
 <body>
@@ -281,14 +262,24 @@
     <div>Quét mã để chuyển khoản</div>
 </div>
 
-    <div>
-      <label style="font-size: 20px;">Đổi điểm nhận ưu đãi:</label><br>
-      <input type="text" placeholder="Nhập số điểm muốn đổi"> <button>Áp dụng</button><br>
-      <small>Còn 38 xu (1 điểm = 1.000 đ)</small><br>
-      <small>Phí giao hàng: 10.000 đ (1km = 5.000 đ)</small>
-    </div>
+    <div class="flex flex-col gap-1">
+  <label class="text-lg font-semibold">🎁 Đổi điểm nhận ưu đãi:</label>
+  <div class="flex items-center gap-2">
+    <input type="number" id="discount-points" placeholder="Nhập số điểm muốn đổi"
+       class="flex-1 px-3 py-1.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
+    <button class="px-3 py-1.5 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-lg shadow">
+      Áp dụng
+    </button>
+  </div>
+  <p class="text-sm text-gray-600">Còn <strong>38 xu</strong> (1 điểm = 1.000 đ)</p>
+  <p class="text-sm text-gray-600">Phí giao hàng: <strong>10.000 đ</strong> (1km = 5.000 đ)</p>
+</div>
 
-    <div class="total">Tổng tiền: </div>
+<p class="text-sm text-green-600" id="discount-display" style="display:none;">
+  Ưu đãi: Trừ 0 đ
+</p>
+
+<div class="total" id="total-display">Tổng tiền: </div>
     <button class="order-btn">Đặt hàng</button>
   </div>
 </div>
@@ -330,6 +321,7 @@
             // Render order summary
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             const orderSummary = document.getElementById('order-summary');
+                const totalDisplay = document.getElementById('total-display');
             let total = 0;
             let html = '';
             cart.forEach((item, idx) => {
@@ -353,6 +345,47 @@
             orderSummary.innerHTML = html;
             document.querySelector('.total').textContent = 'Tổng tiền: ' + total.toLocaleString() + ' đ';
 
+            // Lưu lại tổng tiền ban đầu vào biến toàn cục
+    window.currentTotal = total;
+
+    window.updateQty = function(idx, delta) {
+        if (cart[idx].qty + delta > 0) {
+            cart[idx].qty += delta;
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        location.reload();
+    }
+
+    window.removeItem = function(idx) {
+        cart.splice(idx, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        location.reload();
+    }
+
+    // Xử lý nút áp dụng đổi điểm
+    document.querySelector('.right button').addEventListener('click', function () {
+    const points = parseInt(document.getElementById('discount-points').value || '0');
+    if (isNaN(points) || points < 0) {
+        alert("Vui lòng nhập số điểm hợp lệ.");
+        return;
+    }
+
+    const availablePoints = 38;
+    const usedPoints = Math.min(points, availablePoints);
+    const discount = usedPoints * 1000;
+    const newTotal = Math.max(0, window.currentTotal - discount);
+
+    totalDisplay.textContent = 'Tổng tiền: ' + newTotal.toLocaleString() + ' đ';
+
+    // 👇 Hiển thị dòng ưu đãi
+    const discountDisplay = document.getElementById('discount-display');
+    discountDisplay.textContent = 'Ưu đãi: Trừ ' + discount.toLocaleString() + ' đ';
+    discountDisplay.style.display = 'block';
+
+    // Lưu lại nếu cần
+    window.currentDiscount = discount;
+    window.usedPoints = usedPoints;
+});
             // Cập nhật lại localStorage khi thay đổi số lượng/xóa
             window.updateQty = function(idx, delta) {
                 if (cart[idx].qty + delta > 0) {
@@ -367,56 +400,51 @@
                 location.reload();
             }
 
-            // QR code logic
-            document.querySelectorAll('input[name="payment"]').forEach(input => {
-                input.addEventListener('change', function() {
-                    if (this.value === 'bank') {
-                        document.getElementById('qr-code').style.display = 'block';
-                    } else {
-                        document.getElementById('qr-code').style.display = 'none';
-                    }
-                });
-            });
+            
         });
 
-        document.querySelector('.order-btn').addEventListener('click', function() {
-            // Lấy giỏ hàng hiện tại
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            if (cart.length === 0) {
-                alert('Giỏ hàng trống!');
-                return;
-            }
-            // Tính tổng tiền
-            let total = 0;
-            cart.forEach(item => total += item.price * item.qty);
+        document.querySelector('.order-btn').addEventListener('click', function () {
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  if (cart.length === 0) {
+    alert('Giỏ hàng trống!');
+    return;
+  }
 
-            // Tạo đơn hàng mới
-            const newOrder = {
-                id: Date.now(), // id duy nhất
-                items: cart,
-                total: total,
-                status: 'cho-xac-nhan', // trạng thái mặc định
-                createdAt: new Date().toLocaleString()
-            };
+  cart.forEach(item => total += item.price * item.qty);
 
-            // Lấy danh sách đơn hàng cũ
-            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            orders.unshift(newOrder); // thêm đơn mới lên đầu
-            localStorage.setItem('orders', JSON.stringify(orders));
+  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
-            // Xóa giỏ hàng
-            localStorage.removeItem('cart');
+  const orderInfo = {
+    id: Date.now(),
+    items: cart,
+    total: total,
+    status: 'cho-xac-nhan',
+    createdAt: new Date().toLocaleString(),
+    customer: {
+      name: 'Nguyễn Văn A',
+      phone: '0123456789',
+      address: '175 Tây Sơn, Phố Tây Sơn, Đống Đa, Hà Nội, 100000, Việt Nam',
+    },
+    payment: paymentMethod
+  };
 
-           // Hiển thị modal
-  document.getElementById('success-modal').classList.remove('hidden');
+  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+  orders.unshift(orderInfo);
+  localStorage.setItem('orders', JSON.stringify(orders));
+  localStorage.removeItem('cart');
 
-  // Gắn sự kiện cho nút chuyển trang
-  document.getElementById('go-to-orders').addEventListener('click', function () {
-    window.location.href = 'DonHang.html';
-  });
-        });
-        
-    </script>
-
+  if (paymentMethod === 'bank') {
+    // Chuyển sang trang ThanhToan.html
+    localStorage.setItem('pendingPayment', JSON.stringify(orderInfo));
+    window.location.href = 'ThanhToan.html';
+  } else {
+    // Nếu thanh toán tiền mặt thì hiện modal như cũ
+    document.getElementById('success-modal').classList.remove('hidden');
+    document.getElementById('go-to-orders').addEventListener('click', function () {
+      window.location.href = 'DonHang.html';
+    });
+  }
+});
+</script>
 </body>
 </html>
