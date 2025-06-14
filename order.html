@@ -1,0 +1,222 @@
+<!-- orders.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đơn hàng - Lotorio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    .orders-container {
+  display: flex;
+  padding: 30px;
+}
+
+.sidebar {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar button {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 8px;
+}
+
+.sidebar button.active {
+  background: #ffd000;
+  font-weight: bold;
+}
+
+.orders-content {
+  flex: 1;
+  padding-left: 30px;
+}
+
+.order-search {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.order-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background: white;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.status.success {
+  background: #c8f7c5;
+  color: green;
+}
+
+.status.shipping {
+  background: #ffe3a3;
+  color: #aa6b00;
+}
+
+.order-body {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.order-body img {
+  width: 80px;
+  border-radius: 8px;
+}
+
+.details {
+  flex: 1;
+}
+
+.price {
+  text-align: right;
+}
+
+.review-btn, .tracking-btn {
+  background: #ffd000;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.pagination .active {
+  background: #ffd000;
+  font-weight: bold;
+}
+
+</style>
+<body>
+
+<header class="header">
+  <div class="logo">Lotorio</div>
+  <nav class="navbar">
+    <a href="index.html">Trang chủ</a>
+    <a href="menu.html">Thực đơn</a>
+    <a href="#">Khuyến mãi</a>
+    <a href="#">Đặt tiệc</a>
+    <a href="orders.html" style="color: #f9c000;">Đơn hàng</a>
+  </nav>
+  <div class="icons">
+    <input type="text" placeholder="Tìm kiếm...">
+    <span class="cart-icon">🛒</span>
+    <span class="user-icon">👤</span>
+  </div>
+</header>
+
+<section class="orders-container">
+  <aside class="sidebar">
+    <button class="active">Tất cả</button>
+    <button>Chờ xác nhận</button>
+    <button>Đang giao</button>
+    <button>Hoàn thành</button>
+  </aside>
+
+  <main class="orders-content">
+    <input type="text" class="order-search" placeholder="Tìm kiếm theo đơn, cửa hàng, món ăn...">
+    
+    <div class="order-card">
+      <div class="order-header">
+        <strong>Lotorio - Tây Sơn</strong>
+        <span class="status success">Giao hàng thành công</span>
+      </div>
+      <div class="order-body">
+        <img src="img/my-y.jpg" alt="Mỳ Ý">
+        <div class="details">
+          <p>Mỳ Ý</p>
+          <p>x1</p>
+          <a href="#">Xem thêm</a>
+        </div>
+        <div class="price">
+          <p>Tổng tiền: 45.000đ</p>
+          <button class="review-btn">Đánh giá</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-header">
+        <strong>Lotorio - Thái Thịnh</strong>
+        <span class="status shipping">Đang giao</span>
+      </div>
+      <div class="order-body">
+        <img src="img/burger.jpg" alt="Burger">
+        <div class="details">
+          <p>Hamburger phô mai</p>
+          <p>x1</p>
+          <a href="#">Xem thêm</a>
+        </div>
+        <div class="price">
+          <p>Tổng tiền: 50.000đ</p>
+          <button class="tracking-btn">Lưu ý</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phân trang -->
+    <div class="pagination">
+      <button>«</button>
+      <button class="active">1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>»</button>
+    </div>
+  </main>
+</section>
+
+<footer class="footer">
+  <div class="footer-left">
+    <div class="footer-logo">Lotorio</div>
+    <p>Địa chỉ: 175 Tây Sơn, Đống Đa, Hà Nội</p>
+    <p>Điện thoại: 0123456789</p>
+    <p>Email: lotorio2025@gmail.com</p>
+  </div>
+  <div class="footer-center">
+    <h4>Hỗ trợ</h4>
+    <p>Chính sách và quy định</p>
+    <p>Chính sách giao hàng</p>
+    <p>Chăm sóc khách hàng</p>
+  </div>
+  <div class="footer-right">
+    <h4>Theo dõi</h4>
+    <p>Facebook | Instagram | YouTube</p>
+    <input type="email" placeholder="Nhập email của bạn">
+    <button>→</button>
+  </div>
+</footer>
+
+</body>
+</html>

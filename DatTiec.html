@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotorio - Đặt tiệc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Baloo', sans-serif; }
+        .custom-yellow { background-color: #FFD700; color: #1a1a1a; }
+        .custom-yellow-text { color: #FFD700; }
+        .combo-img { width: 180px; height: 120px; object-fit: cover; border-radius: 16px; }
+        .combo-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 8px #0001; padding: 24px 12px; text-align: center; }
+        .qty-btn { width: 32px; height: 32px; border-radius: 50%; background: #eee; font-size: 1.5rem; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+        .qty-btn:active { background: #FFD700; color: #1a1a1a; }
+    </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col">
+    <!-- Navigation will be injected here -->
+    <div id="nav-placeholder"></div>
+
+    <main class="flex-1 max-w-6xl mx-auto px-4 py-8">
+        <h2 class="text-3xl font-bold text-center mb-8">COMBO TIỆC</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <!-- Combo 1 -->
+            <div class="combo-card">
+                <img src="https://img.freepik.com/free-photo/delicious-burger-with-french-fries_23-2148252347.jpg" alt="LO set" class="combo-img mx-auto mb-4">
+                <div class="font-bold text-lg mb-2">LO set : 10-15 người</div>
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <button class="qty-btn" onclick="updateQty(0, -1)">−</button>
+                    <span id="qty-0" class="text-xl font-bold">0</span>
+                    <button class="qty-btn" onclick="updateQty(0, 1)">+</button>
+                </div>
+            </div>
+            <!-- Combo 2 -->
+            <div class="combo-card">
+                <img src="https://img.freepik.com/free-photo/burger-french-fries-wooden-board_140725-8736.jpg" alt="TO set" class="combo-img mx-auto mb-4">
+                <div class="font-bold text-lg mb-2">TO set : 15-20 người</div>
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <button class="qty-btn" onclick="updateQty(1, -1)">−</button>
+                    <span id="qty-1" class="text-xl font-bold">0</span>
+                    <button class="qty-btn" onclick="updateQty(1, 1)">+</button>
+                </div>
+            </div>
+            <!-- Combo 3 -->
+            <div class="combo-card">
+                <img src="https://img.freepik.com/free-photo/assortment-fast-food-black-background_23-2148260106.jpg" alt="RI set" class="combo-img mx-auto mb-4">
+                <div class="font-bold text-lg mb-2">RI set : 20-25 người</div>
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <button class="qty-btn" onclick="updateQty(2, -1)">−</button>
+                    <span id="qty-2" class="text-xl font-bold">0</span>
+                    <button class="qty-btn" onclick="updateQty(2, 1)">+</button>
+                </div>
+            </div>
+            <!-- Combo 4 -->
+            <div class="combo-card">
+                <img src="https://img.freepik.com/free-photo/fast-food-table-black-background_140725-8956.jpg" alt="O set" class="combo-img mx-auto mb-4">
+                <div class="font-bold text-lg mb-2">O set : 25-30 người</div>
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <button class="qty-btn" onclick="updateQty(3, -1)">−</button>
+                    <span id="qty-3" class="text-xl font-bold">0</span>
+                    <button class="qty-btn" onclick="updateQty(3, 1)">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-xl font-bold mb-4">Bạn cần thêm lựa chọn? Mời bạn tham khảo <a href="ThucDon.html" class="custom-yellow-text underline">Thực đơn</a> nhé!</div>
+        <div class="text-center text-2xl font-bold custom-yellow-text mb-8">Đặt tiệc ngay hôm nay để nhận ưu đãi lên đến 20% !!! <span class="inline-block align-middle"> <svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' fill='currentColor' viewBox='0 0 16 16'><path d='M6.5 0a.5.5 0 0 1 .5.5V1h2V.5a.5.5 0 0 1 1 0V1h1.5A1.5 1.5 0 0 1 13 2.5v11A1.5 1.5 0 0 1 11.5 15h-7A1.5 1.5 0 0 1 3 13.5v-11A1.5 1.5 0 0 1 4.5 1H6V.5a.5.5 0 0 1 .5-.5zM4.5 2A.5.5 0 0 0 4 2.5v11a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5v-11a.5.5 0 0 0-.5-.5h-7z'/></svg></span></div>
+        <div class="flex justify-center mb-8">
+            <button class="custom-yellow text-black font-bold text-xl px-12 py-4 rounded-full shadow-lg hover:bg-yellow-400 transition" onclick="orderParty()">ĐẶT TIỆC</button>
+        </div>
+        <div class="flex justify-end">
+            <a href="#" class="text-gray-700 underline">Chính sách hoàn hủy</a>
+        </div>
+    </main>
+
+    <!-- Footer will be injected here -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load nav and footer using fetch
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            });
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+        // Số lượng các combo
+        let comboQty = [0, 0, 0, 0];
+        function updateQty(idx, delta) {
+            comboQty[idx] = Math.max(0, comboQty[idx] + delta);
+            document.getElementById('qty-' + idx).textContent = comboQty[idx];
+        }
+        function orderParty() {
+            if (comboQty.every(q => q === 0)) {
+                alert('Vui lòng chọn ít nhất 1 combo để đặt tiệc!');
+                return;
+            }
+            let summary = '';
+            const names = ['LO set : 10-15 người', 'TO set : 15-20 người', 'RI set : 20-25 người', 'O set : 25-30 người'];
+            comboQty.forEach((q, i) => {
+                if (q > 0) summary += `\n${names[i]}: ${q}`;
+            });
+            alert('Bạn đã đặt tiệc thành công với các combo:' + summary + '\nChúng tôi sẽ liên hệ xác nhận trong thời gian sớm nhất!');
+            // Reset số lượng
+            comboQty = [0,0,0,0];
+            for(let i=0;i<4;i++) document.getElementById('qty-'+i).textContent = '0';
+        }
+    </script>
+</body>
+</html>
