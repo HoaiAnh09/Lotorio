@@ -325,23 +325,24 @@
             let total = 0;
             let html = '';
             cart.forEach((item, idx) => {
-                total += item.price * item.qty;
-                html += `
-                <div class="item">
-                    <img src="https://via.placeholder.com/60" alt="${item.name}">
-                    <div class="item-info">
-                        <div>${item.name}</div>
-                        <div>${item.price.toLocaleString()} đ</div>
-                    </div>
-                    <div class="qty-control">
-                        <button onclick="updateQty(${idx}, -1)">-</button>
-                        <span>${item.qty}</span>
-                        <button onclick="updateQty(${idx}, 1)">+</button>
-                        <button onclick="removeItem(${idx})">🗑️</button>
-                    </div>
-                </div>
-                `;
-            });
+  total += item.price * item.qty;
+  html += `
+  <div class="item">
+    <img src="${item.image}" alt="${item.name}">
+    <div class="item-info">
+        <div>${item.name}</div>
+        <div>${item.price.toLocaleString()} đ</div>
+    </div>
+    <div class="qty-control">
+        <button onclick="updateQty(${idx}, -1)">-</button>
+        <span>${item.qty}</span>
+        <button onclick="updateQty(${idx}, 1)">+</button>
+        <button onclick="removeItem(${idx})">🗑️</button>
+    </div>
+  </div>
+  `;
+});
+
             orderSummary.innerHTML = html;
             document.querySelector('.total').textContent = 'Tổng tiền: ' + total.toLocaleString() + ' đ';
 
@@ -405,6 +406,7 @@
 
         document.querySelector('.order-btn').addEventListener('click', function () {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  
   if (cart.length === 0) {
     alert('Giỏ hàng trống!');
     return;
@@ -412,7 +414,7 @@
 
   let total = 0;
   cart.forEach(item => total += item.price * item.qty);
-
+  
   const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
   const orderInfo = {
@@ -446,6 +448,17 @@
     });
   }
 });
+
+// document.querySelectorAll('input[name="payment"]').forEach(input => {
+//   input.addEventListener('change', function () {
+//     const qrCode = document.getElementById('qr-code');
+//     if (this.value === 'bank') {
+//       qrCode.style.display = 'block';
+//     } else {
+//       qrCode.style.display = 'none';
+//     }
+//   });
+// });
 
         
     </script>
