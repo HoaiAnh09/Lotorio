@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: 'Baloo', sans-serif;
+        }
+        .hero-bg {
+            background: url('https://via.placeholder.com/1920x600') no-repeat center/cover;
+            background-color: #1a1a1a;
+        }
+        .custom-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+        .custom-yellow-text {
+            color: #FFD700;
+        }
+        .discount-circle {
+            background: radial-gradient(circle, #ff0000, #ff5555);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+<body class="bg-white">
+  <div id="nav-placeholder"></div>
+
+  <div class="max-w-6xl mx-auto mt-8 bg-white rounded shadow p-6">
+    <div class="flex">
+      <div class="w-1/4 pr-4">
+        <button onclick="showTab('lichsu')"
+          class="block w-full text-left px-4 py-2 mb-2 font-semibold border rounded:200 hover:bg-yellow-200 bg-yellow-400">
+          Lịch sử
+        </button>
+        <button onclick="showTab('danhan')"
+          class="block w-full text-left px-4 py-2 mb-2 font-semibold border rounded hover:bg-yellow-200">
+          Đã nhận
+        </button>
+        <button onclick="showTab('dadung')"
+          class="block w-full text-left px-4 py-2 font-semibold border rounded hover:bg-yellow-200">
+          Đã dùng
+        </button>
+      </div>
+
+      <!-- Nội dung điểm -->
+      <div class="w-3/4">
+        <div class="bg-yellow-100 p-4 rounded font-semibold text-lg mb-4">
+          Tổng điểm: <span class="text-black font-bold">100 điểm</span>
+        </div>
+
+        <!-- Lịch sử -->
+        <div id="lichsu" class="point-tab">
+          <table class="w-full border">
+            
+            <tbody>
+              <tr>
+                <td class="p-2 border">Tích điểm thưởng</td>
+                <td class="p-2 border">15/06/2025</td>
+                <td class="p-2 border text-green-600 font-semibold">+100</td>
+              </tr>
+              <tr>
+                <td class="p-2 border">Tích điểm thưởng</td>
+                <td class="p-2 border">15/06/2025</td>
+                <td class="p-2 border text-red-600 font-semibold">-100</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Đã nhận -->
+        <div id="danhan" class="point-tab hidden">
+          <table class="w-full border">
+            
+            <tbody>
+              <tr>
+                <td class="p-2 border">Tích điểm thưởng</td>
+                <td class="p-2 border">15/06/2025</td>
+                <td class="p-2 border text-green-600 font-semibold">+100</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Đã dùng -->
+        <div id="dadung" class="point-tab hidden">
+          <table class="w-full border">
+           
+            <tbody>
+              <tr>
+                <td class="p-2 border">Tích điểm thưởng</td>
+                <td class="p-2 border">15/06/2025</td>
+                <td class="p-2 border text-red-600 font-semibold">-100</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer-placeholder"></div>
+
+  <!-- JavaScript tab -->
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.point-tab').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+    }
+  </script>
+
+ 
+    <script>
+        fetch('nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('nav-placeholder').innerHTML = data;
+
+            // Đánh dấu nav hiện tại
+            const path = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('#nav-placeholder nav a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === path) {
+                    link.classList.add('font-bold', 'custom-yellow-text');
+                } else {
+                    link.classList.remove('font-bold', 'custom-yellow-text');
+                }
+            });
+        });
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+    
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+       
+  </script>
+</body>
+
+</html>
