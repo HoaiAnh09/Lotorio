@@ -70,12 +70,36 @@
             <button class="custom-yellow text-black font-bold text-xl px-12 py-4 rounded-full shadow-lg hover:bg-yellow-400 transition" onclick="orderParty()">ĐẶT TIỆC</button>
         </div>
         <div class="flex justify-end">
-            <a href="#" class="text-gray-700 underline">Chính sách hoàn hủy</a>
+            <a href="javascript:void(0)" onclick="openPolicyModal()" class="text-gray-700 underline">Chính sách hoàn hủy</a>
         </div>
     </main>
 
     <!-- Footer will be injected here -->
     <div id="footer-placeholder"></div>
+
+    <!-- Popup Chính sách hoàn hủy -->
+    <div id="cancel-policy-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-lg w-full relative shadow-lg">
+            <button onclick="closePolicyModal()" class="absolute top-4 right-4 text-3xl font-bold text-red-500 hover:text-red-700">&times;</button>
+            <div class="flex items-center justify-center mb-4">
+                <span class="text-4xl font-bold custom-yellow-text mr-2">CHÍNH SÁCH HOÀN HỦY</span>
+            </div>
+            <ol class="list-decimal pl-4 text-lg font-bold mb-4">
+                <li>
+                    Hủy trước 24 giờ: <span class="font-normal">Nếu hủy đặt tiệc trước 24 giờ so với thời gian đặt, khách hàng sẽ được hoàn 100% số tiền đã thanh toán.</span>
+                </li>
+                <li>
+                    Hủy trong 12 - 24 giờ: <span class="font-normal">Nếu hủy trong 12 - 24 giờ trước thời gian đặt, khách hàng sẽ được hoàn 50% số tiền đã thanh toán, với trường hợp bất khả kháng (do thiên tai, dịch bệnh), khách hàng được hoàn 100% số tiền đã thanh toán và khách hàng cần thông báo ngay cho nhà hàng.</span>
+                </li>
+                <li>
+                    Thay đổi thời gian: <span class="font-normal">Khách hàng có thể thay đổi thời gian đặt tiệc một lần miễn phí, nếu thông báo trước 24 giờ.</span>
+                </li>
+            </ol>
+            <div class="text-base font-bold">
+                Vui lòng liên hệ hotline: 1900 0091 / email: lotoriotlu@gmail.com để yêu cầu thực hiện hủy hoặc thay đổi.
+            </div>
+        </div>
+    </div>
 
     <script>
         // Load nav and footer using fetch
@@ -109,6 +133,12 @@
             // Reset số lượng
             comboQty = [0,0,0,0];
             for(let i=0;i<4;i++) document.getElementById('qty-'+i).textContent = '0';
+        }
+        function openPolicyModal() {
+            document.getElementById('cancel-policy-modal').classList.remove('hidden');
+        }
+        function closePolicyModal() {
+            document.getElementById('cancel-policy-modal').classList.add('hidden');
         }
     </script>
 </body>
