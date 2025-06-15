@@ -18,16 +18,21 @@
             color: #FFD700;
         }
         .sidebar-btn {
-            background-color: #fff3cd;
-            border: none;
             padding: 10px;
-            margin: 5px 0;
-            width: 100%;
-            text-align: left;
+            margin-bottom: 10px;
+            border: none;
+            background: #eee;
             cursor: pointer;
+            text-align: left;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: background 0.2s, font-weight 0.2s, color 0.2s;
         }
-        .sidebar-btn:hover, .sidebar-btn.active {
-            background-color: #ffe6a7;
+        .sidebar-btn.active {
+            background: #ffd000;
+            font-weight: bold;
+            color: #1a1a1a;
         }
         .menu-item {
             background-color: #f7f7f7;
@@ -48,7 +53,8 @@
     <!-- Main Content -->
     <main class="max-w-6xl mx-auto px-4 py-12 flex">
         <!-- Sidebar -->
-        <aside class="w-1/5 pr-4">
+        <aside class="sidebar w-1/5 pr-4 flex flex-col">
+            <button class="sidebar-btn active" data-category="all">Tất cả</button>
             <button class="sidebar-btn" data-category="ga-ran">Gà rán</button>
             <button class="sidebar-btn" data-category="mi-com">Mỳ ý/Cơm</button>
             <button class="sidebar-btn" data-category="burger">Burger</button>
@@ -168,11 +174,6 @@
                         item.classList.remove('active');
                     }
                 });
-
-                // Show all items if no category is selected (e.g., reset)
-                if (!category) {
-                    menuItems.forEach(item => item.classList.add('active'));
-                }
             });
         });
 
@@ -238,12 +239,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-    
