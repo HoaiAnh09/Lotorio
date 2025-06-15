@@ -145,6 +145,7 @@
                         <div class="price">
                             <p>Tổng tiền: 45.000đ</p>
                             <button class="action-btn">Đánh giá</button>
+                            <button class="action-btn">Hỗ trợ</button>
                         </div>
                     </div>
                 </div>
@@ -187,11 +188,21 @@
     <script>
         // Load nav and footer using fetch
         fetch('nav.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading nav:', error));
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('nav-placeholder').innerHTML = data;
+
+        // Đánh dấu nav hiện tại
+        const path = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('#nav-placeholder nav a');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === path) {
+                link.classList.add('font-bold', 'custom-yellow-text');
+            } else {
+                link.classList.remove('font-bold', 'custom-yellow-text');
+            }
+        });
+    });
 
         fetch('footer.html')
             .then(response => response.text())
@@ -257,6 +268,7 @@
                             </div>
                             <div class="price">
                                 <p>Tổng tiền: ${order.total.toLocaleString()}đ</p>
+                                <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Hỗ trợ</button>
                                 <button class="action-btn">Đánh giá</button>
                             </div>
                         </div>

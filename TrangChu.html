@@ -73,13 +73,17 @@
     <section class="py-12 text-center">
         <h2 class="text-2xl font-bold mb-8">TÌM NHÀ HÀNG GẦN BẠN</h2>
         <div class="flex justify-center space-x-4">
-            <select class="border p-2 rounded">
-                <option>Chọn tỉnh thành</option>
+            <select id="province" class="border p-2 rounded">
+                <option value="">Chọn tỉnh thành</option>
+                <option value="hanoi">TP Hà Nội</option>
+                <option value="hungyen">Hưng Yên</option>
+                <option value="haiphong">Hải Phòng</option>
             </select>
-            <select class="border p-2 rounded">
-                <option>Chọn quận huyện</option>
+            <select id="district" class="border p-2 rounded">
+                <option value="">Chọn quận huyện</option>
             </select>
-            <button class="custom-yellow text-black py-2 px-4 rounded">Tìm kiếm</button>
+            <button id="search-btn" class="custom-yellow text-black py-2 px-4 rounded">Tìm kiếm</button>
+            <div id="result" class="mt-4 text-lg font-bold text-center"></div>
         </div>
     </section>
 
@@ -88,24 +92,24 @@
         <h2 class="text-2xl font-bold text-center mb-8">DỊCH VỤ</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
             <div class="bg-gray-100 p-4 rounded-lg text-center">
-                <img src="https://via.placeholder.com/150" alt="Sinh nhật" class="mx-auto mb-2">
+                <img src="img/" alt="Sinh nhật" class="mx-auto mb-2">
                 <p>Sinh nhật</p>
-                <button class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
+                <button onclick="window.location.href='DatTiec.html'" class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
             </div>
             <div class="bg-gray-100 p-4 rounded-lg text-center">
-                <img src="https://via.placeholder.com/150" alt="Đặt đồ giao" class="mx-auto mb-2">
+                <img src="img/" alt="Đặt đồ giao" class="mx-auto mb-2">
                 <p>Đặt đồ giao</p>
-                <button class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
+                <button onclick="window.location.href='DatHang.html'" class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
             </div>
             <div class="bg-gray-100 p-4 rounded-lg text-center">
-                <img src="https://via.placeholder.com/150" alt="Đánh giá" class="mx-auto mb-2">
+                <img src="img/" alt="Đánh giá" class="mx-auto mb-2">
                 <p>Đánh giá & góp ý</p>
                 <button class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
             </div>
             <div class="bg-gray-100 p-4 rounded-lg text-center">
-                <img src="https://via.placeholder.com/150" alt="Hỗ trợ" class="mx-auto mb-2">
+                <img src="img/" alt="Hỗ trợ" class="mx-auto mb-2">
                 <p>Hỗ trợ</p>
-                <button class="custom-yellow text-black py-1 px-2 rounded">Xem thêm</button>
+                <button class="custom-yellow text-black py-1 px-2 rounded" onclick="openSupportPopup()">Xem thêm</button>
             </div>
         </div>
     </section>
@@ -135,14 +139,37 @@
 
     <div id="footer-placeholder"></div>
 
+    <!-- Popup Hỗ trợ -->
+    <div id="support-popup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-sm w-full relative shadow-lg text-center">
+            <button onclick="closeSupportPopup()" class="absolute top-4 right-4 text-3xl font-bold text-red-500 hover:text-red-700">&times;</button>
+            <div class="text-2xl font-bold custom-yellow-text mb-4">Hỗ trợ khách hàng</div>
+            <div class="text-lg font-semibold mb-2">Hotline:</div>
+            <div class="text-xl font-bold mb-4 text-red-600">1900 0091</div>
+            <div class="text-lg font-semibold mb-2">Email:</div>
+            <div class="text-base font-bold mb-2">lotoriotlu@gmail.com</div>
+            <div class="text-gray-500 text-sm">(Liên hệ để được hỗ trợ nhanh nhất)</div>
+        </div>
+    </div>
+
     <script>
         // Load nav and footer using fetch
         fetch('nav.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading nav:', error));
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('nav-placeholder').innerHTML = data;
+
+            // Đánh dấu nav hiện tại
+            const path = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('#nav-placeholder nav a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === path) {
+                    link.classList.add('font-bold', 'custom-yellow-text');
+                } else {
+                    link.classList.remove('font-bold', 'custom-yellow-text');
+                }
+            });
+        });
 
         fetch('footer.html')
             .then(response => response.text())
@@ -159,6 +186,60 @@
                 });
             });
         });
+        const districtsData = {
+        hanoi: {
+            "Đống Đa": ["175 Tây Sơn"],
+            "Hai Bà Trưng": ["Quang Trung"]
+        },
+        hungyen: {
+            "Thành phố Hưng Yên": ["Cơ sở 1 Hưng Yên"]
+        },
+        haiphong: {
+            "Quận Lê Chân": ["Cơ sở Lê Chân"],
+            "Quận Ngô Quyền": ["Cơ sở Ngô Quyền"]
+        }
+    };
+
+    const provinceSelect = document.getElementById('province');
+    const districtSelect = document.getElementById('district');
+    const resultDiv = document.getElementById('result');
+
+    provinceSelect.addEventListener('change', function() {
+        const province = this.value;
+        districtSelect.innerHTML = '<option value="">Chọn quận huyện</option>';
+        resultDiv.innerHTML = '';
+        if (province && districtsData[province]) {
+            Object.keys(districtsData[province]).forEach(district => {
+                const opt = document.createElement('option');
+                opt.value = district;
+                opt.textContent = district;
+                districtSelect.appendChild(opt);
+            });
+        }
+    });
+
+    document.getElementById('search-btn').addEventListener('click', function() {
+        const province = provinceSelect.value;
+        const district = districtSelect.value;
+        resultDiv.innerHTML = '';
+        if (!province || !district) {
+            resultDiv.textContent = 'Vui lòng chọn tỉnh thành và quận huyện!';
+            return;
+        }
+        const branches = districtsData[province][district];
+        if (branches && branches.length > 0) {
+            resultDiv.innerHTML = 'Các cơ sở tại <b>' + district + '</b>:<br>' + branches.map(cs => '- ' + cs).join('<br>');
+        } else {
+            resultDiv.textContent = 'Không tìm thấy cơ sở nào!';
+        }
+    });
+
+    function openSupportPopup() {
+        document.getElementById('support-popup').classList.remove('hidden');
+    }
+    function closeSupportPopup() {
+        document.getElementById('support-popup').classList.add('hidden');
+    }
     </script>
 </body>
 </html>

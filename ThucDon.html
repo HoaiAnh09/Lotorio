@@ -61,19 +61,19 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="menu-items">
                 <!-- Mì/Com -->
                 <div class="menu-item" data-category="mi-com">
-                    <img src="/Lotorio/img/Com-ga-gion.jpg" alt="Cơm Gà Giòn" class="mx-auto mb-2">
+                    <img src="img/Com-ga-gion.jpg" alt="Cơm Gà Giòn" class="mx-auto mb-2">
                     <p class="font-semibold">Cơm Gà Giòn</p>
                     <p class="text-yellow-600">49.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
                 </div>
                 <div class="menu-item" data-category="mi-com">
-                    <img src="/Lotorio/img/Com-ga-cay.jpg" alt="Cơm Gà Sốt Cay" class="mx-auto mb-2">
+                    <img src="img/Com-ga-cay.jpg" alt="Cơm Gà Sốt Cay" class="mx-auto mb-2">
                     <p class="font-semibold">Cơm Gà Sốt Cay</p>
                     <p class="text-yellow-600">69.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
                 </div>
                 <div class="menu-item" data-category="mi-com">
-                    <img src="/Lotorio/img/Com-ga-nuoc.jpg" alt="Cơm Gà Cay + Nước" class="mx-auto mb-2">
+                    <img src="img/Com-ga-nuoc.jpg" alt="Cơm Gà Cay + Nước" class="mx-auto mb-2">
                     <p class="font-semibold">Cơm Gà Cay + Nước</p>
                     <p class="text-yellow-600">69.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
@@ -81,7 +81,7 @@
 
                 <!-- Burger -->
                 <div class="menu-item" data-category="burger">
-                    <img src="/Lotorio/img/Burger-ga.jpg" alt="Burger Gà" class="mx-auto mb-2">
+                    <img src="img/Burger-ga.jpg" alt="Burger Gà" class="mx-auto mb-2">
                     <p class="font-semibold">Burger Gà</p>
                     <p class="text-yellow-600">45.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
@@ -89,13 +89,13 @@
 
                 <!-- Đồ uống -->
                 <div class="menu-item" data-category="do-uong">
-                    <img src="/Lotorio/img/pepsi.jpg" alt="Pepsi" class="mx-auto mb-2">
+                    <img src="img/pepsi.jpg" alt="Pepsi" class="mx-auto mb-2">
                     <p class="font-semibold">Pepsi</p>
                     <p class="text-yellow-600">15.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
                 </div>
                 <div class="menu-item" data-category="do-uong">
-                    <img src="/Lotorio/img/cola.jpg" alt="Coca" class="mx-auto mb-2">
+                    <img src="img/cola.jpg" alt="Coca" class="mx-auto mb-2">
                     <p class="font-semibold">Coca</p>
                     <p class="text-yellow-600">15.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
@@ -103,26 +103,26 @@
 
                 <!-- Gà rán -->
                 <div class="menu-item" data-category="ga-ran">
-                    <img src="/Lotorio/img/Ga-Khoai.jpg" alt="Combo Gà Khoai" class="mx-auto mb-2">
+                    <img src="img/Ga-Khoai.jpg" alt="Combo Gà Khoai" class="mx-auto mb-2">
                     <p class="font-semibold">Combo Gà Khoai</p>
                     <p class="text-yellow-600">99.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
                 </div>
                 <div class="menu-item" data-category="ga-ran">
-                    <img src="/Lotorio/img/ga-ran.jpg" alt="Gà Rán Giòn" class="mx-auto mb-2">
+                    <img src="img/ga-ran.jpg" alt="Gà Rán Giòn" class="mx-auto mb-2">
                     <p class="font-semibold">Gà Rán Giòn</p>
                     <p class="text-yellow-600">39.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
                 </div>
                 <div class="menu-item" data-category="ga-ran">
-                    <img src="/Lotorio/img/ga-cay.jpg" alt="Gà Rán Sốt Cay" class="mx-auto mb-2">
+                    <img src="img/ga-cay.jpg" alt="Gà Rán Sốt Cay" class="mx-auto mb-2">
                     <p class="font-semibold">Gà Rán Sốt Cay</p>
                     <p class="text-yellow-600">39.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
                 </div>
 
                 <div class="menu-item" data-category="mon-trang-mieng">
-                    <img src="/Lotorio/img/kem-vani.jpg" alt="Kem" class="mx-auto mb-2">
+                    <img src="img/kem-vani.jpg" alt="Kem" class="mx-auto mb-2">
                     <p class="font-semibold">Kem Vani</p>
                     <p class="text-yellow-600">10.000đ</p>
                     <button class="custom-yellow text-black py-1 px-2 rounded">+</button>
@@ -200,12 +200,12 @@
             cartTotal.textContent = total + 'đ';
         }
 
-        function addToCart(name, price) {
+        function addToCart(name, price, image) {
             const found = cart.find(item => item.name === name);
             if (found) {
                 found.qty += 1;
             } else {
-                cart.push({ name, price, qty: 1 });
+                cart.push({ name, price, qty: 1, image });
             }
             localStorage.setItem('cart', JSON.stringify(cart));
             renderCart();
@@ -228,7 +228,8 @@
             btn.addEventListener('click', () => {
                 const name = item.querySelector('p.font-semibold').textContent;
                 const price = parseInt(item.querySelector('.text-yellow-600').textContent.replace(/\D/g, ''));
-                addToCart(name, price);
+                const image = item.querySelector('img').getAttribute('src');
+                addToCart(name, price, image);
             });
         });
         document.querySelector('#cart-sidebar a[href="DatHang.html"]').addEventListener('click', function() {

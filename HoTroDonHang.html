@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hỗ trợ đơn hàng - Lotorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Baloo', sans-serif; }
+        .custom-yellow {
+            background-color: #FFD700;
+            color: #1a1a1a;
+        }
+        .custom-yellow-text {
+            color: #FFD700;
+        }
+        .chat-bubble-left {
+            background: #fff;
+            border-radius: 16px 16px 16px 0;
+            padding: 12px 16px;
+            display: inline-block;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px #0001;
+        }
+        .chat-bubble-right {
+            background: #fff9c4;
+            border-radius: 16px 16px 0 16px;
+            padding: 12px 16px;
+            display: inline-block;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px #0001;
+        }
+    </style>
+</head>
+<body class="bg-[#f5f7fa] min-h-screen">
+    <!-- Navigation will be injected here -->
+    <div id="nav-placeholder"></div>
+
+    <!-- Main content -->
+    <div class="max-w-3xl mx-auto mt-8 bg-white rounded-2xl shadow p-6">
+        <div class="flex items-center mb-4">
+            <button onclick="window.history.back()" class="mr-2 text-2xl">&larr;</button>
+            <span class="text-xl font-bold">Hỗ trợ đơn hàng</span>
+        </div>
+        <div class="flex items-start mb-6">
+            <img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" alt="support" class="w-12 h-12 mr-4">
+            <div>
+                <div class="font-bold mb-2">Bạn đang hỏi về thông tin đơn hàng sau:</div>
+                <div class="bg-gray-50 rounded-xl p-4 flex items-center mb-2">
+                    <img src="https://img.freepik.com/free-photo/burger-french-fries-wooden-board_140725-8736.jpg" alt="burger" class="w-20 h-16 rounded-lg mr-4 object-cover">
+                    <div>
+                        <div>tên món</div>
+                        <div>7 món, Tổng tiền: <b>368.000đ</b></div>
+                        <div class="text-yellow-600 font-bold">Đã giao hàng thành công</div>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-500">Mã đơn hàng: ABCDXY2123</div>
+            </div>
+        </div>
+        <!-- Chat area -->
+        <div id="chat-area" class="mb-4">
+            <!-- User message -->
+            <div class="flex justify-end items-end mb-2">
+                <div>
+                    <div class="chat-bubble-right">Đơn của mình bị thiếu 1 burger phô mai</div>
+                    <img src="https://i.imgur.com/0y0y0y0.jpg" alt="ảnh minh họa" class="w-32 h-24 rounded-lg mt-1 border object-cover">
+                </div>
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="user" class="w-10 h-10 ml-2 rounded-full">
+            </div>
+            <!-- Admin reply -->
+            <div class="flex items-end mb-2">
+                <img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" alt="support" class="w-10 h-10 mr-2">
+                <div>
+                    <div class="chat-bubble-left">Dạ Lotorio xin lỗi bạn nhiều, ad xin phép giao bù ngay phần gà sốt cay kèm 1 phần khoai tây chiên miễn phí ạ</div>
+                </div>
+            </div>
+        </div>
+        <!-- Input -->
+        <form id="chat-form" class="flex items-center bg-[#fff9c4] rounded-full px-4 py-2">
+            <input id="chat-input" type="text" placeholder="Nhập nội dung cần hỗ trợ..." class="flex-1 bg-transparent outline-none text-lg" autocomplete="off">
+            <label for="img-upload" class="cursor-pointer mx-2">
+                <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="upload" class="w-7 h-7">
+            </label>
+            <input type="file" id="img-upload" accept="image/*" class="hidden">
+            <button type="submit" class="ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#FFD700" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Load nav using fetch
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+                // Đánh dấu nav hiện tại
+                const path = window.location.pathname.split('/').pop();
+                const navLinks = document.querySelectorAll('#nav-placeholder nav a');
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === path) {
+                        link.classList.add('font-bold', 'custom-yellow-text');
+                    } else {
+                        link.classList.remove('font-bold', 'custom-yellow-text');
+                    }
+                });
+            });
+        // Giả lập chat (không gửi lên server)
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatArea = document.getElementById('chat-area');
+        const imgUpload = document.getElementById('img-upload');
+
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            chatArea.innerHTML += `
+                <div class="flex justify-end items-end mb-2">
+                    <div>
+                        <div class="chat-bubble-right">${text}</div>
+                    </div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="user" class="w-10 h-10 ml-2 rounded-full">
+                </div>
+            `;
+            chatInput.value = '';
+            chatArea.scrollTop = chatArea.scrollHeight;
+        });
+
+        imgUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                chatArea.innerHTML += `
+                    <div class="flex justify-end items-end mb-2">
+                        <div>
+                            <img src="${evt.target.result}" alt="ảnh gửi" class="w-32 h-24 rounded-lg mt-1 border object-cover">
+                        </div>
+                        <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="user" class="w-10 h-10 ml-2 rounded-full">
+                    </div>
+                `;
+                chatArea.scrollTop = chatArea.scrollHeight;
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
