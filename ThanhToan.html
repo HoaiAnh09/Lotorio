@@ -21,7 +21,7 @@
 
   <div class="max-w-6xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
     <h1 class="text-3xl font-bold mb-6 text-black flex items-center">
-      <span class="text-2xl mr-3">←</span> Thông tin thanh toán
+      <span class="text-2xl mr-3 cursor-pointer" onclick="confirmExit()">←</span> Thông tin thanh toán
     </h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Cột trái: Danh sách món -->
@@ -63,11 +63,36 @@
   Tổng tiền: <span id="total-price">0 đ</span>
 </div>
 
-      <button onclick="window.location.href='DonHang.html'" class="bg-yellow-400 text-black font-bold px-6 py-3 rounded-lg shadow hover:bg-yellow-300 transition">
-        Hoàn tất
+      <button onclick="showSuccessModal()" class="bg-yellow-400 text-black font-bold px-6 py-3 rounded-lg shadow hover:bg-yellow-300 transition">Hoàn tất</button>
+    </div>
+  </div>
+
+  <!-- Modal thông báo đặt hàng -->
+<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-xl shadow-lg text-center max-w-lg w-full">
+    <h2 class="text-3xl font-bold text-green-600 mb-4">🎉 Đặt hàng thành công!</h2>
+    <p class="text-lg text-gray-700 mb-5">Cảm ơn bạn đã đặt hàng tại <strong>Lotorio</strong>. Chúng tôi sẽ xử lý đơn của bạn ngay.</p>
+    <button id="go-to-orders" class="mt-4 px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-lg text-lg">
+      Xem đơn hàng
+    </button>
+  </div>
+</div>
+
+
+  <!-- Modal xác nhận thoát -->
+<div id="exitModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-lg text-center">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Bạn có chắc chắn muốn thoát khỏi trang thanh toán?</h2>
+    <div class="flex justify-center gap-4 mt-6">
+      <button onclick="hideModal()" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold">Hủy</button>
+      <button onclick="confirmLeave()" class="px-4 py-2 rounded bg-yellow-400 hover:bg-yellow-300 text-black font-semibold" style="background-color: #FFD700;">
+        Xác nhận
       </button>
     </div>
   </div>
+</div>
+
+
 
     <div id="footer-placeholder"></div>
 
@@ -103,12 +128,16 @@
         const itemEl = document.createElement('li');
         itemEl.className = 'flex justify-between items-center py-3';
         itemEl.innerHTML = `
-          <div>
-            <p class="font-semibold">${item.name}</p>
-            <p class="text-sm text-gray-500">Số lượng: ${item.qty}</p>
-          </div>
-          <div class="font-semibold">${(item.price * item.qty).toLocaleString()} đ</div>
-        `;
+  <div class="flex items-center space-x-4">
+    <img src="${item.image || 'img/default.jpg'}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+    <div>
+      <p class="font-semibold">${item.name}</p>
+      <p class="text-sm text-gray-500">Số lượng: ${item.qty}</p>
+    </div>
+  </div>
+  <div class="font-semibold">${(item.price * item.qty).toLocaleString()} đ</div>
+`;
+
         itemsContainer.appendChild(itemEl);
       });
 
@@ -121,6 +150,29 @@
       phoneEl.textContent = data.customer?.phone || '';
       totalEl.textContent = data.total?.toLocaleString() + ' đ';
     }
+    // quay lại trang dathang
+    function confirmExit() {
+  document.getElementById('exitModal').classList.remove('hidden');
+}
+
+function hideModal() {
+  document.getElementById('exitModal').classList.add('hidden');
+}
+
+function confirmLeave() {
+  window.location.href = "DatHang.html";
+}
+function showSuccessModal() {
+  document.getElementById('success-modal').classList.remove('hidden');
+  // Xóa dữ liệu đã thanh toán để tránh hiển thị lại
+  localStorage.removeItem('pendingPayment');
+}
+
+document.getElementById('go-to-orders').addEventListener('click', () => {
+  window.location.href = 'DonHang.html';
+});
+
+
   </script>
 </body>
 </html>

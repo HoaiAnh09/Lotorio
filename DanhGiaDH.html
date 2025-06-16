@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đánh giá đơn hàng - Lotorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Baloo', sans-serif; }
+        .custom-yellow { background-color: #FFD700; color: #1a1a1a; }
+        .custom-yellow-text { color: #FFD700; }
+        .star { font-size: 2rem; cursor: pointer; color: #ccc; }
+        .star.selected { color: #FFD700; }
+        .like-btn, .dislike-btn {
+            border: 2px solid #FFD700;
+            border-radius: 50%;
+            width: 36px; height: 36px;
+            display: inline-flex; align-items: center; justify-content: center;
+            margin: 0 4px; font-size: 1.3rem; cursor: pointer; background: #fff;
+            transition: background 0.2s, color 0.2s;
+        }
+        .like-btn.selected, .dislike-btn.selected { background: #FFD700; color: #1a1a1a; }
+    </style>
+</head>
+<body class="bg-[#fffbe6] min-h-screen">
+    <div id="nav-placeholder"></div>
+    <div class="max-w-6xl mx-auto py-6 px-4 flex gap-8">
+        <!-- Danh sách món -->
+        <div class="flex-1">
+            <div class="bg-[#fff9c4] rounded-xl p-4 mb-4 text-center font-bold text-lg">Bạn có hài lòng với món?</div>
+            <div id="dish-list" class="bg-white rounded-xl p-4">
+                <!-- Danh sách món sẽ render ở đây -->
+            </div>
+        </div>
+        <!-- Đánh giá tổng thể -->
+        <div class="w-[400px]">
+            <div class="bg-[#fff9c4] rounded-xl p-4 mb-4">
+                <div class="font-bold text-lg mb-2" id="store-name">Lotorio - Tây Sơn</div>
+                <div id="star-rating" class="mb-2 flex gap-1"></div>
+                <textarea id="review-text" rows="7" class="w-full rounded p-2 mt-2" placeholder="Nhập nhận xét..."></textarea>
+                <label class="flex items-center mt-2 cursor-pointer">
+                    <input type="checkbox" id="anonymous" class="mr-2"> Ẩn danh đánh giá của tôi
+                </label>
+                <label class="flex items-center mt-2 cursor-pointer gap-2 text-sm">
+                    <input type="file" id="img-upload" class="hidden" accept="image/*">
+                    
+                    <span class="inline-flex items-center px-2 py-0.5 bg-white border border-yellow-400 rounded cursor-pointer">
+                        <svg width="16" height="16" fill="#FFD700" viewBox="0 0 24 24">
+                            <path d="M12 16.5l4-4h-3V7.5h-2v5H8l4 4z" />
+                        </svg>
+                        <span class="ml-1">Thêm ảnh</span>
+                    </span>
+                
+                    <span id="img-preview" class="text-gray-600"></span>
+                </label>
+                
+                <button id="submit-btn" class="w-full mt-4 py-2 rounded custom-yellow font-bold text-lg">Gửi</button>
+            </div>
+        </div>
+    </div>
+    <div id="footer-placeholder"></div>
+    <script>
+        // Load nav & footer
+        fetch('nav.html').then(r=>r.text()).then(d=>{document.getElementById('nav-placeholder').innerHTML=d;});
+        fetch('footer.html').then(r=>r.text()).then(d=>{document.getElementById('footer-placeholder').innerHTML=d;});
+
+        // Lấy id đơn hàng từ URL (?id=...)
+        function getOrderId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // Lấy dữ liệu đơn hàng từ localStorage (giả lập)
+        function getOrderData(orderId) {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            return orders.find(o => o.id == orderId);
+        }
+
+        // Render danh sách món ăn
+        function renderDishes(order) {
+            const dishList = document.getElementById('dish-list');
+            dishList.innerHTML = '';
+            order.items.forEach((item, idx) => {
+                dishList.innerHTML += `
+                    <div class="flex items-center justify-between border-b py-3">
+                        <div class="flex items-center gap-4">
+                            <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.name}" class="w-16 h-16 rounded object-cover">
+                            <div>
+                                <div class="font-bold">${item.name}</div>
+                                <div class="text-gray-500">${item.price.toLocaleString()} đ</div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="dislike-btn" data-idx="${idx}" title="Không hài lòng">&#128078;</button>
+                            <button class="like-btn" data-idx="${idx}" title="Hài lòng">&#128077;</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Xử lý like/dislike từng món
+        function handleDishFeedback() {
+            document.querySelectorAll('.like-btn, .dislike-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = this.getAttribute('data-idx');
+                    const isLike = this.classList.contains('like-btn');
+                    // Bỏ chọn cả 2 trước
+                    this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    // Lưu feedback vào biến tạm (có thể lưu vào localStorage nếu muốn)
+                    dishFeedback[idx] = isLike ? 'like' : 'dislike';
+                });
+            });
+        }
+
+        // Render rating sao
+        function renderStars(rating) {
+            const starDiv = document.getElementById('star-rating');
+            starDiv.innerHTML = '';
+            for(let i=1;i<=5;i++) {
+                const star = document.createElement('span');
+                star.className = 'star' + (i<=rating ? ' selected' : '');
+                star.innerHTML = '&#9733;';
+                star.addEventListener('click', ()=> {
+                    renderStars(i);
+                    overallRating.value = i;
+                });
+                starDiv.appendChild(star);
+            }
+        }
+
+        // Xử lý upload ảnh
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderId = getOrderId();
+            const order = getOrderData(orderId);
+            if (!order) {
+                document.getElementById('dish-list').innerHTML = '<div class=\"text-red-500\">Không tìm thấy đơn hàng!</div>';
+                return;
+            }
+            document.getElementById('store-name').textContent = order.store || 'Lotorio';
+            renderDishes(order);
+            handleDishFeedback();
+
+            // Sao
+            window.overallRating = { value: 0 };
+            renderStars(0);
+
+            // Ảnh preview
+            document.getElementById('img-upload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        document.getElementById('img-preview').innerHTML = `<img src=\"${evt.target.result}\" class=\"w-12 h-12 inline-block rounded ml-2\">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Gửi đánh giá
+            document.getElementById('submit-btn').addEventListener('click', function() {
+                const review = {
+                    orderId,
+                    store: order.store,
+                    rating: overallRating.value,
+                    comment: document.getElementById('review-text').value,
+                    anonymous: document.getElementById('anonymous').checked,
+                    dishFeedback,
+                    // Có thể thêm ảnh, v.v.
+                };
+                alert('Đã gửi đánh giá!\\n' + JSON.stringify(review, null, 2));
+                // TODO: Gửi lên server hoặc lưu localStorage
+            });
+        });
+
+        // Biến lưu feedback từng món
+        let dishFeedback = {};
+    </script>
+</body>
+</html>

@@ -107,7 +107,18 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById('nav-placeholder').innerHTML = data;
-            });
+
+        // Đánh dấu nav hiện tại
+        const path = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('#nav-placeholder nav a');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === path) {
+                link.classList.add('font-bold', 'custom-yellow-text');
+            } else {
+                link.classList.remove('font-bold', 'custom-yellow-text');
+            }
+        });
+    });
         fetch('footer.html')
             .then(response => response.text())
             .then(data => {
@@ -120,26 +131,85 @@
             document.getElementById('qty-' + idx).textContent = comboQty[idx];
         }
         function orderParty() {
-            if (comboQty.every(q => q === 0)) {
-                alert('Vui lòng chọn ít nhất 1 combo để đặt tiệc!');
-                return;
-            }
-            let summary = '';
-            const names = ['LO set : 10-15 người', 'TO set : 15-20 người', 'RI set : 20-25 người', 'O set : 25-30 người'];
-            comboQty.forEach((q, i) => {
-                if (q > 0) summary += `\n${names[i]}: ${q}`;
-            });
-            alert('Bạn đã đặt tiệc thành công với các combo:' + summary + '\nChúng tôi sẽ liên hệ xác nhận trong thời gian sớm nhất!');
-            // Reset số lượng
-            comboQty = [0,0,0,0];
-            for(let i=0;i<4;i++) document.getElementById('qty-'+i).textContent = '0';
-        }
+    if (comboQty.every(q => q === 0)) {
+        alert('Vui lòng chọn ít nhất 1 combo để đặt tiệc!');
+        return;
+    }
+
+    // Lưu dữ liệu vào localStorage
+const comboData = [
+    {
+        name: 'LO set : 10-15 người',
+        items: [
+            { name: 'Gà rán', img: 'img/ga-ran.jpg', quantity: 15, price: 25000 },
+            { name: 'Khoai tây chiên', img: 'img/khoai-tay.jpg', quantity: 15, price: 10000 },
+            { name: 'Pepsi', img: 'img/pepsi.jpg', quantity: 15, price: 10000 },
+            { name: 'kem', img: 'img/kem-vani.jpg', quantity: 15, price: 10000 }
+        ]
+    },
+    {
+        name: 'TO set : 15-20 người',
+        items: [
+            { name: 'Gà rán', img: 'img/ga-ran.jpg', quantity: 20, price: 25000 },
+            { name: 'Khoai tây chiên', img: 'img/khoai-tay.jpg', quantity: 20, price: 10000 },
+            { name: 'Pepsi', img: 'img/pepsi.jpg', quantity: 20, price: 10000 },
+            { name: 'kem', img: 'img/kem-vani.jpg', quantity: 20, price: 10000 }
+        ]
+    },
+    {
+        name: 'TO set : 20-25 người',
+        items: [
+            { name: 'Gà rán', img: 'img/ga-ran.jpg', quantity: 25, price: 25000 },
+            { name: 'Khoai tây chiên', img: 'img/khoai-tay.jpg', quantity: 25, price: 10000 },
+            { name: 'Pepsi', img: 'img/pepsi.jpg', quantity: 25, price: 10000 },
+            { name: 'kem', img: 'img/kem-vani.jpg', quantity: 25, price: 10000 }
+        ]
+    },
+    {
+        name: 'TO set : 25-30 người',
+        items: [
+            { name: 'Gà rán', img: 'img/ga-ran.jpg', quantity: 30, price: 25000 },
+            { name: 'Khoai tây chiên', img: 'img/khoai-tay.jpg', quantity: 30, price: 10000 },
+            { name: 'Pepsi', img: 'img/pepsi.jpg', quantity: 30, price: 10000 },
+            { name: 'kem', img: 'img/kem-vani.jpg', quantity: 30, price: 10000 }
+        ]
+    },
+];
+
+    const selectedCombos = comboQty
+    .map((qty, index) => ({
+        name: comboData[index].name,
+        quantity: qty,
+        items: comboData[index].items
+    }))
+    .filter(item => item.quantity > 0);
+
+localStorage.setItem('selectedCombos', JSON.stringify(selectedCombos));
+
+
+    // Chuyển hướng sang trang thông tin tiệc
+    window.location.href = 'ThongTinTiec.html';
+}
+
         function openPolicyModal() {
             document.getElementById('cancel-policy-modal').classList.remove('hidden');
         }
         function closePolicyModal() {
             document.getElementById('cancel-policy-modal').classList.add('hidden');
         }
+
+        
+    const combos = JSON.parse(localStorage.getItem('selectedCombos')) || [];
+    console.log("Dữ liệu đã chọn:", combos);
+
+    // Ví dụ hiển thị ra
+    combos.forEach(c => {
+        const p = document.createElement('p');
+        p.textContent = `${c.name} - Số lượng: ${c.quantity}`;
+        document.body.appendChild(p);
+    });
+
+
     </script>
 </body>
 </html>
