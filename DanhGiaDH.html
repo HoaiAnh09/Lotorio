@@ -41,14 +41,19 @@
                 <label class="flex items-center mt-2 cursor-pointer">
                     <input type="checkbox" id="anonymous" class="mr-2"> Ẩn danh đánh giá của tôi
                 </label>
-                <label class="flex items-center mt-2 cursor-pointer">
-                    <input type="file" id="img-upload" class="hidden" accept=\"image/*\">
-                    <span class="inline-flex items-center px-3 py-1 bg-white border border-yellow-400 rounded cursor-pointer">
-                        <svg width=\"20\" height=\"20\" fill=\"#FFD700\" viewBox=\"0 0 24 24\"><path d=\"M12 16.5l4-4h-3V7.5h-2v5H8l4 4z\"/></svg>
-                        <span class=\"ml-2\">Thêm hình ảnh</span>
+                <label class="flex items-center mt-2 cursor-pointer gap-2 text-sm">
+                    <input type="file" id="img-upload" class="hidden" accept="image/*">
+                    
+                    <span class="inline-flex items-center px-2 py-0.5 bg-white border border-yellow-400 rounded cursor-pointer">
+                        <svg width="16" height="16" fill="#FFD700" viewBox="0 0 24 24">
+                            <path d="M12 16.5l4-4h-3V7.5h-2v5H8l4 4z" />
+                        </svg>
+                        <span class="ml-1">Thêm ảnh</span>
                     </span>
-                    <span id="img-preview" class="ml-2"></span>
+                
+                    <span id="img-preview" class="text-gray-600"></span>
                 </label>
+                
                 <button id="submit-btn" class="w-full mt-4 py-2 rounded custom-yellow font-bold text-lg">Gửi</button>
             </div>
         </div>
