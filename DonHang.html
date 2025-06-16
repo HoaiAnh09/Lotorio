@@ -136,7 +136,7 @@
                         <span class="status success">Giao hàng thành công</span>
                     </div>
                     <div class="order-body">
-                        <img src="https://via.placeholder.com/80" alt="Mỳ Ý" class="w-20 h-20 object-cover rounded">
+                        <img src="img/my-y.jpg" alt="Mỳ Ý" class="w-20 h-20 object-cover rounded">
                         <div class="details">
                             <p>Mỳ Ý</p>
                             <p>x1</p>
@@ -144,8 +144,8 @@
                         </div>
                         <div class="price">
                             <p>Tổng tiền: 45.000đ</p>
-                            <button class="action-btn">Đánh giá</button>
-                            <button class="action-btn">Hỗ trợ</button>
+                            <button class="action-btn" onclick="window.location.href='DanhGiaDH.html'">Đánh giá</button>
+                            <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Hỗ trợ</button>
                         </div>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                         <span class="status shipping">Đang giao</span>
                     </div>
                     <div class="order-body">
-                        <img src="https://via.placeholder.com/80" alt="Burger" class="w-20 h-20 object-cover rounded">
+                        <img src="img/Burger.png" alt="Burger" class="w-20 h-20 object-cover rounded">
                         <div class="details">
                             <p>Hamburger phô mai</p>
                             <p>x1</p>
@@ -165,7 +165,8 @@
                         </div>
                         <div class="price">
                             <p>Tổng tiền: 50.000đ</p>
-                            <button class="action-btn">Lưu ý</button>
+                            <button class="action-btn" onclick="window.location.href='DanhGiaDH.html'">Đánh giá</button>
+                            <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Hỗ trợ</button>
                         </div>
                     </div>
                 </div>
@@ -188,21 +189,21 @@
     <script>
         // Load nav and footer using fetch
         fetch('nav.html')
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('nav-placeholder').innerHTML = data;
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
 
         // Đánh dấu nav hiện tại
-        const path = window.location.pathname.split('/').pop();
-        const navLinks = document.querySelectorAll('#nav-placeholder nav a');
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === path) {
-                link.classList.add('font-bold', 'custom-yellow-text');
-            } else {
-                link.classList.remove('font-bold', 'custom-yellow-text');
-            }
+            const path = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('#nav-placeholder nav a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === path) {
+                    link.classList.add('font-bold', 'custom-yellow-text');
+                } else {
+                    link.classList.remove('font-bold', 'custom-yellow-text');
+                }
+            });
         });
-    });
 
         fetch('footer.html')
             .then(response => response.text())
@@ -269,7 +270,7 @@
                             <div class="price">
                                 <p>Tổng tiền: ${order.total.toLocaleString()}đ</p>
                                 <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Hỗ trợ</button>
-                                <button class="action-btn">Đánh giá</button>
+                                <button class="action-btn" onclick="window.location.href='DanhGiaDH.html'">Đánh giá</button>
                             </div>
                         </div>
                     </div>
