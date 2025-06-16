@@ -184,22 +184,44 @@
         let cart = JSON.parse(localStorage.getItem('cart') || '[]');
         
         function renderCart() {
-            const cartItems = document.getElementById('cart-items');
-            const cartTotal = document.getElementById('cart-total');
-            cartItems.innerHTML = '';
-            let total = 0;
-            cart.forEach((item, idx) => {
-                total += item.price * item.qty;
-                cartItems.innerHTML += `
-                    <li class="flex justify-between items-center mb-2">
-                        <span>${item.name} x${item.qty}</span>
-                        <span>${item.price * item.qty}đ</span>
-                        <button onclick="removeFromCart(${idx})" class="text-red-500 ml-2">✕</button>
-                    </li>
-                `;
-            });
-            cartTotal.textContent = total + 'đ';
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    cartItems.innerHTML = '';
+    let total = 0;
+
+    cart.forEach((item, idx) => {
+        total += item.price * item.qty;
+        cartItems.innerHTML += `
+            <li class="flex justify-between items-center mb-4 border-b pb-2">
+                <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded mr-3">
+                <div class="flex-1">
+                    <p class="font-semibold">${item.name}</p>
+                    <div class="flex items-center mt-1">
+                        <button onclick="changeQty(${idx}, -1)" class="px-2 text-lg bg-gray-200 rounded">−</button>
+                        <span class="mx-2">${item.qty}</span>
+                        <button onclick="changeQty(${idx}, 1)" class="px-2 text-lg bg-gray-200 rounded">+</button>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="whitespace-nowrap">${item.price * item.qty}đ</p>
+                    <button onclick="removeFromCart(${idx})" class="text-red-500 text-sm mt-1">🗑️</button>
+                </div>
+            </li>
+        `;
+    });
+
+    cartTotal.textContent = total + 'đ';
+}
+        function changeQty(index, delta) {
+    if (cart[index]) {
+        cart[index].qty += delta;
+        if (cart[index].qty <= 0) {
+            cart.splice(index, 1);
         }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+    }
+}
 
         function addToCart(name, price, image) {
             const found = cart.find(item => item.name === name);
