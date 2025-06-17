@@ -10,7 +10,7 @@
 
     <style>
         body {
-            font-family: 'Baloo', sans-serif;
+            font-family: 'Baloo2', sans-serif;
         }
         .hero-bg {
             background: url('https://via.placeholder.com/1920x600') no-repeat center/cover;
@@ -74,7 +74,7 @@
 
     <!-- Find Restaurant Section -->
     <section class="py-12 text-center">
-        <h2 class="text-2xl font-bold mb-8">TÌM NHÀ HÀNG GẦN BẠN</h2>
+        <h2 class="text-2xl font-bold mb-4">TÌM NHÀ HÀNG GẦN BẠN</h2>
         <div class="flex justify-center space-x-4">
             <select id="province" class="border p-2 rounded">
                 <option value="">Chọn tỉnh thành</option>
@@ -86,8 +86,8 @@
                 <option value="">Chọn quận huyện</option>
             </select>
             <button id="search-btn" class="custom-yellow text-black py-2 px-4 rounded">Tìm kiếm</button>
-            <div id="result" class="mt-4 text-lg font-bold text-center"></div>
         </div>
+        <div id="result-box" class="flex justify-center mt-6"></div>
     </section>
 
     <!-- Services Section -->
@@ -155,6 +155,13 @@
         </div>
     </div>
 
+    <div id="branch-popup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-0 max-w-md w-full relative shadow-lg">
+            <div id="branch-popup-content"></div>
+            <button onclick="closeBranchPopup()" class="w-full py-3 bg-[#FFD700] text-black font-bold rounded-b-2xl text-lg">Đóng</button>
+        </div>
+    </div>
+
     <script>
         // Load nav and footer using fetch
         fetch('nav.html')
@@ -191,7 +198,7 @@
         });
         const districtsData = {
         hanoi: {
-            "Đống Đa": ["175 Tây Sơn"],
+            "Đống Đa": ["Cơ sở 1 Đống Đa","175 Tây Sơn"],
             "Hai Bà Trưng": ["Quang Trung"]
         },
         hungyen: {
@@ -205,12 +212,12 @@
 
     const provinceSelect = document.getElementById('province');
     const districtSelect = document.getElementById('district');
-    const resultDiv = document.getElementById('result');
+    const resultBox = document.getElementById('result-box');
 
     provinceSelect.addEventListener('change', function() {
         const province = this.value;
         districtSelect.innerHTML = '<option value="">Chọn quận huyện</option>';
-        resultDiv.innerHTML = '';
+        resultBox.innerHTML = '';
         if (province && districtsData[province]) {
             Object.keys(districtsData[province]).forEach(district => {
                 const opt = document.createElement('option');
@@ -224,16 +231,35 @@
     document.getElementById('search-btn').addEventListener('click', function() {
         const province = provinceSelect.value;
         const district = districtSelect.value;
-        resultDiv.innerHTML = '';
+        resultBox.innerHTML = '';
         if (!province || !district) {
-            resultDiv.textContent = 'Vui lòng chọn tỉnh thành và quận huyện!';
+            resultBox.innerHTML = '<div class="bg-white border border-red-400 text-red-600 rounded-xl p-4 max-w-xl w-full text-left">Vui lòng chọn tỉnh thành và quận huyện!</div>';
             return;
         }
         const branches = districtsData[province][district];
         if (branches && branches.length > 0) {
-            resultDiv.innerHTML = 'Các cơ sở tại <b>' + district + '</b>:<br>' + branches.map(cs => '- ' + cs).join('<br>');
+            let html = `
+                <div class='flex flex-col items-center'>
+                    <div class='font-bold text-lg mb-2'>Các cơ sở tại <span class='custom-yellow-text'>${district}</span>:</div>
+                    <div class='bg-white border border-yellow-400 rounded-xl p-6 max-w-xl w-full text-left'>
+            `;
+            branches.forEach(cs => {
+                const info = branchesData[cs];
+                html += `
+                    <div class='py-2 border-b last:border-b-0 flex flex-col gap-1'>
+                        <div class='font-bold'>${info.name}</div>
+                        <div class='text-sm'>${info.address}</div>
+                        <div class='text-sm'>Thời gian hoạt động: ${info.time}</div>
+                        <div class='text-sm'>Ngày cuối tuần: ${info.weekend}</div>
+                        <button class='text-yellow-600 underline mt-1' onclick='showBranchDetail("${cs.replace(/"/g, '&quot;')}")'>Xem thêm</button>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            html += `</div>`;
+            resultBox.innerHTML = html;
         } else {
-            resultDiv.textContent = 'Không tìm thấy cơ sở nào!';
+            resultBox.innerHTML = '<div class="bg-white border border-yellow-400 rounded-xl p-4 max-w-xl w-full text-left">Không tìm thấy cơ sở nào!</div>';
         }
     });
 
@@ -242,6 +268,46 @@
     }
     function closeSupportPopup() {
         document.getElementById('support-popup').classList.add('hidden');
+    }
+
+    const branchesData = {
+        "175 Tây Sơn": {
+            name: "175 Tây Sơn",
+            address: "175 Tây Sơn, Đống Đa, Hà Nội",
+            phone: "1900 6778",
+            status: "Đang hoạt động",
+            time: "08:00 ~ 21:30",
+            weekend: "08:00 ~ 21:30",
+            special: "",
+            policy: "Miễn Phí Giao Hàng trong phạm vi 5km cho đơn hàng từ <span style='color:#e74c3c;font-weight:bold'>80,000đ</span>"
+        },
+        "Cơ sở 1 Đống Đa": {
+            name: "Cơ sở 1 Đống Đa",
+            address: "201 Khâm Thiên, Thổ Quan, Đống Đa, Hà Nội",
+            phone: "1900 6778",
+            status: "Đang hoạt động",
+            time: "08:00 ~ 21:30",
+            weekend: "08:00 ~ 21:30",
+            special: "",
+            policy: "Miễn Phí Giao Hàng trong phạm vi 5km cho đơn hàng từ <span style='color:#e74c3c;font-weight:bold'>80,000đ</span>"
+        },
+        // Thêm các cơ sở khác...
+    };
+
+    function showBranchDetail(branchName) {
+        const info = branchesData[branchName];
+        if (!info) return;
+        document.getElementById('branch-popup-content').innerHTML = `
+            <div class="bg-[#FFD700] text-black text-center text-xl font-bold py-3 rounded-t-2xl">${info.name}</div>
+            <table class="w-full text-left text-base leading-relaxed mt-2">
+                <tr><td class="font-bold py-3 px-4 border-b w-1/3">Số điện thoại liên hệ</td><td class="py-3 px-4 border-b">${info.phone}</td></tr>
+                <tr><td class="font-bold py-3 px-4">Chính sách và Quy định về giao hàng</td><td class="py-3 px-4">${info.policy}</td></tr>
+            </table>
+        `;
+        document.getElementById('branch-popup').classList.remove('hidden');
+    }
+    function closeBranchPopup() {
+        document.getElementById('branch-popup').classList.add('hidden');
     }
     </script>
 </body>
