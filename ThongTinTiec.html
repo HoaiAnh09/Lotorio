@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lotorio - Thông tin chi tiết bàn tiệc</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {  font-family: 'Baloo2', sans-serif; }
+    .custom-yellow-text { color: #FFD700; }
+    .input-box {
+      background-color: #eee;
+      padding: 0.5rem;
+      border-radius: 8px;
+      width: 100%;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="bg-white">
+
+  <div id="nav-placeholder"></div>
+
+  <div class="max-w-6xl mx-auto mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Form bên trái -->
+    <div class="bg-white rounded-lg p-6 shadow space-y-4">
+      <h2 class="text-xl font-bold text-center mb-4">Thông tin chi tiết bàn tiệc</h2>
+
+      <div><label class="font-bold">Họ và tên:</label><input type="text" class="input-box" placeholder="Nhập họ tên"></div>
+      <div><label class="font-bold">Số điện thoại:</label><input type="tel" class="input-box" placeholder="Nhập số điện thoại"></div>
+      <div><label class="font-bold">Email:</label><input type="email" class="input-box" placeholder="email phải chứa @"></div>
+      <div><label class="font-bold">Chủ tiệc:</label><input type="text" class="input-box" placeholder="Tên chủ tiệc"></div>
+      <div><label class="font-bold">Ngày tổ chức:</label><input type="date" class="input-box"></div>
+      <div><label class="font-bold">Giờ:</label><input type="time" class="input-box"></div>
+      <div><label class="font-bold">Cơ sở:</label><input type="text" class="input-box" placeholder="Chọn cơ sở tổ chức"></div>
+      <div><label class="font-bold">Ghi chú:</label><textarea rows="3" class="input-box" placeholder="Nhập ghi chú thêm (nếu có)"></textarea></div>
+
+      <div class="text-center">
+        <button class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2 rounded-full">Hoàn tất</button>
+      </div>
+    </div>
+
+    <!-- Combo + Món đã chọn bên phải -->
+    <div class="bg-white rounded-lg p-6 shadow space-y-4" id="combo-section">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Combo & Món đã chọn</h2>
+        <a href="ThucDonTiec.html" class="bg-[#FFD700] hover:bg-yellow-400 text-black font-bold px-4 py-2 rounded-full inline-block">➕ Thêm món</a>
+      </div>
+
+      <div id="combo-list" class="space-y-4"></div>
+      <div id="cart-wrapper"></div>
+
+      <div id="combo-total" class="bg-yellow-400 p-4 rounded text-lg font-bold text-black text-right mt-4">
+        Tổng tiền: đang tính...
+      </div>
+
+      <div class="flex justify-between mt-4">
+        <button onclick="window.location.href='DatTiec.html'" class="bg-gray-300 px-6 py-2 rounded-full font-bold hover:bg-gray-400">Quay lại</button>
+        <button onclick="handleThanhToan()" class="bg-yellow-400 hover:bg-yellow-500 px-6 py-2 rounded-full font-bold">Thanh toán</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <!-- SCRIPT -->
+  <script>
+    // NAV + FOOTER
+    fetch('nav.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('nav-placeholder').innerHTML = data;
+        const path = window.location.pathname.split('/').pop();
+        document.querySelectorAll('#nav-placeholder nav a').forEach(link => {
+          if (link.getAttribute('href') === path) {
+            link.classList.add('font-bold', 'custom-yellow-text');
+          }
+        });
+      });
+
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+      });
+
+    // HIỂN THỊ COMBO VÀ TÍNH TIỀN
+    const combos = JSON.parse(localStorage.getItem('selectedCombos') || '[]');
+    const comboList = document.getElementById('combo-list');
+    let totalAll = 0;
+
+    combos.forEach(combo => {
+      let comboHTML = `
+        <div class="border border-gray-200 rounded p-4 shadow">
+          <h3 class="text-lg font-bold mb-2">${combo.name} - Số lượng: ${combo.quantity}</h3>
+          <div class="flex flex-col gap-4">
+      `;
+
+      combo.items.forEach(item => {
+        const itemTotal = item.quantity * item.price * combo.quantity;
+        totalAll += itemTotal;
+
+        comboHTML += `
+          <div class="flex bg-gray-50 p-3 rounded-lg shadow-sm">
+            <img src="${item.img}" alt="${item.name}" class="w-20 h-20 object-cover rounded mr-4">
+            <div>
+              <div class="font-bold text-base">${item.name}</div>
+              <div>Số lượng mỗi set: ${item.quantity}</div>
+              <div>Giá mỗi món: ${item.price.toLocaleString()} đ</div>
+              <div class="text-yellow-600 font-semibold">Tổng: ${itemTotal.toLocaleString()} đ</div>
+            </div>
+          </div>
+        `;
+      });
+
+      comboHTML += `</div></div>`;
+      comboList.innerHTML += comboHTML;
+    });
+
+const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+const cartWrapper = document.getElementById('cart-wrapper');
+
+if (cart.length > 0) {
+  let cartHTML = `
+    <div class="border border-gray-200 rounded p-4 shadow">
+    <h3 class="text-lg font-bold mb-2">Món gọi thêm - Số lượng: ${cart.reduce((sum, item) => sum + item.qty, 0)}</h3>
+      <div class="flex flex-col gap-4">
+  `;
+
+  cart.forEach((item, index) => {
+    const itemTotal = item.qty * item.price;
+    totalAll += itemTotal;
+
+    cartHTML += `
+      <div class="flex bg-gray-50 p-3 rounded-lg shadow-sm">
+        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded mr-4">
+        <div class="flex-grow">
+          <div class="font-bold text-base">${item.name}</div>
+          <div>Giá: ${item.price.toLocaleString()} đ</div>
+          <div class="text-yellow-600 font-semibold">Tổng: ${itemTotal.toLocaleString()} đ</div>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1">
+                <button onclick="updateQty(${index}, -1)" class="w-8 h-8 rounded border hover:bg-gray-100">-</button>
+                <span class="w-6 text-center font-bold text-sm">${item.qty}</span>
+                <button onclick="updateQty(${index}, 1)" class="w-8 h-8 rounded border hover:bg-gray-100">+</button>
+            </div>
+            <button onclick="removeItem(${index})" class="w-8 h-8 rounded border hover:bg-red-100">
+            <img src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt="Xóa" class="w-4 h-4 mx-auto">
+            </button>
+        </div>
+
+        </div>
+      </div>
+    `;
+  });
+
+  cartHTML += `</div></div>`;
+  cartWrapper.innerHTML = cartHTML;
+}
+
+
+// HÀM XỬ LÝ TĂNG GIẢM SỐ LƯỢNG
+function updateQty(index, delta) {
+  if (cart[index].qty + delta <= 0) return;
+  cart[index].qty += delta;
+  saveCartAndReload();
+}
+
+// HÀM XÓA MÓN
+function removeItem(index) {
+  cart.splice(index, 1);
+  saveCartAndReload();
+}
+
+// HÀM LƯU VÀ TẢI LẠI
+function saveCartAndReload() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  location.reload(); // Tải lại trang để cập nhật giao diện
+}
+
+
+    // TỔNG TIỀN
+    document.getElementById('combo-total').innerText = `Tổng tiền: ${totalAll.toLocaleString()} đ`;
+
+
+    function handleThanhToan() {
+  const hoTen = document.querySelector('input[placeholder="Nhập họ tên"]').value;
+  const sdt = document.querySelector('input[placeholder="Nhập số điện thoại"]').value;
+  const email = document.querySelector('input[placeholder="email phải chứa @"]').value;
+  const chuTiec = document.querySelector('input[placeholder="Tên chủ tiệc"]').value;
+  const ngay = document.querySelector('input[type="date"]').value;
+  const gio = document.querySelector('input[type="time"]').value;
+  const coSo = document.querySelector('input[placeholder="Chọn cơ sở tổ chức"]').value;
+  const ghiChu = document.querySelector('textarea').value;
+
+  const info = { hoTen, sdt, email, chuTiec, ngay, gio, coSo, ghiChu };
+  localStorage.setItem('thongTinTiec', JSON.stringify(info));
+
+  // Lưu combo và món lẻ vào localStorage (đã có từ trước)
+  localStorage.setItem('selectedCombos', JSON.stringify(combos));
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  // Lưu tổng tiền
+  localStorage.setItem('tongTien', totalAll.toString());
+
+  // Chuyển sang trang ThanhToanTiec.html
+  window.location.href = 'ThanhToanTiec.html';
+}
+  </script>
+
+</body>
+</html>
