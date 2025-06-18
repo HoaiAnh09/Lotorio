@@ -144,9 +144,10 @@
         <!-- Modal thông báo đánh giá thành công -->
         <div id="success-modal" class="modal hidden">
             <div class="modal-content">
-                <h2 class="text-xl font-bold mb-4">Đánh giá đơn hàng thành công!</h2>
+                <button id="close-modal" class="absolute top-3 right-3 text-2xl font-bold text-gray-400 hover:text-red-500">&times;</button>
+                <h2 class="text-xl font-bold mb-4"> ✅Đánh giá đơn hàng thành công!</h2>
                 <p>Cảm ơn bạn đã đánh giá đơn hàng tại Lotorio.</p>
-                <button id="go-to-orders" class="modal-btn">Xem đơn hàng</button>
+                <button id="go-to-orders" class="px-4 py-2 text-base rounded-md bg-yellow-400 hover:bg-yellow-300 text-black font-semibold mt-4">Xem đơn hàng</button>
             </div>
         </div>
         <div id="footer-placeholder"></div>
@@ -348,6 +349,9 @@
 
         // Biến lưu feedback từng món
         let dishFeedback = {};
+        document.getElementById('close-modal')?.addEventListener('click', function() {
+            window.location.href = 'DonHang.html';
+            });
     </script>
 </body>
 </html>
