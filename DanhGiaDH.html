@@ -65,8 +65,49 @@
             margin: 0 auto;
             padding: 30px;
         }
-        
-    </style>
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal:not(.hidden) {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .modal:not(.hidden) .modal-content {
+            transform: translateY(0);
+        }
+        .modal-btn {
+            background: #ffd000;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+            </style>
 </head>
 <body>
     <main class="flex-container">
@@ -98,6 +139,14 @@
                     </label>
                     <button id="submit-btn" class="w-full mt-6 py-3 rounded custom-yellow font-bold text-xl hover:bg-yellow-500">Gửi</button>
                 </div>
+            </div>
+        </div>
+        <!-- Modal thông báo đánh giá thành công -->
+        <div id="success-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2 class="text-xl font-bold mb-4">Đánh giá đơn hàng thành công!</h2>
+                <p>Cảm ơn bạn đã đánh giá đơn hàng tại Lotorio.</p>
+                <button id="go-to-orders" class="modal-btn">Xem đơn hàng</button>
             </div>
         </div>
         <div id="footer-placeholder"></div>
@@ -137,7 +186,20 @@
         // Lấy dữ liệu đơn hàng từ localStorage
         function getOrderData(orderId) {
             const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            return orders.find(o => String(o.id) === orderId); // Ép kiểu id thành chuỗi
+            return orders.find(o => String(o.id) === orderId);
+        }
+
+        // Cập nhật trạng thái đơn hàng
+        function updateOrderStatus(orderId, newStatus) {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const orderIndex = orders.findIndex(o => String(o.id) === orderId);
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = newStatus;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                console.log(`Order ${orderId} updated to status: ${newStatus}`);
+            } else {
+                console.error(`Order ${orderId} not found for status update`);
+            }
         }
 
         // Render danh sách món ăn
@@ -196,17 +258,19 @@
             }
         }
 
-        // Xử lý upload ảnh
+        // Xử lý upload ảnh và đánh giá
         document.addEventListener('DOMContentLoaded', function() {
             const orderId = getOrderId();
             const dishList = document.getElementById('dish-list');
             if (!orderId) {
                 dishList.innerHTML = '<div class="text-red-500 text-center text-lg">Không tìm thấy ID đơn hàng!</div>';
+                console.error('Order ID not found in URL');
                 return;
             }
             const order = getOrderData(orderId);
             if (!order) {
                 dishList.innerHTML = '<div class="text-red-500 text-center text-lg">Không tìm thấy đơn hàng!</div>';
+                console.error('Order not found in localStorage for ID:', orderId);
                 return;
             }
             document.getElementById('store-name').textContent = order.store || 'Lotorio - Tây Sơn';
@@ -229,27 +293,57 @@
                 }
             });
 
+            // Gắn sự kiện cho nút "Xem đơn hàng"
+            const goToOrdersBtn = document.getElementById('go-to-orders');
+            if (goToOrdersBtn) {
+                goToOrdersBtn.addEventListener('click', function() {
+                    window.location.href = 'DonHang.html';
+                });
+            } else {
+                console.error('Element with ID "go-to-orders" not found');
+            }
+
             // Gửi đánh giá
-            document.getElementById('submit-btn').addEventListener('click', function() {
-                if (overallRating.value === 0) {
-                    alert('Vui lòng chọn số sao đánh giá!');
-                    return;
-                }
-                const review = {
-                    orderId,
-                    store: order.store || 'Lotorio - Tây Sơn',
-                    rating: overallRating.value,
-                    comment: document.getElementById('review-text').value,
-                    anonymous: document.getElementById('anonymous').checked,
-                    dishFeedback,
-                    timestamp: new Date().toLocaleString()
-                };
-                const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
-                reviews.push(review);
-                localStorage.setItem('reviews', JSON.stringify(reviews));
-                alert('Đã gửi đánh giá thành công!');
-                window.location.href = 'DonHang.html';
-            });
+            const submitBtn = document.getElementById('submit-btn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function() {
+                    try {
+                        if (overallRating.value === 0) {
+                            alert('Vui lòng chọn số sao đánh giá!');
+                            return;
+                        }
+                        const review = {
+                            orderId,
+                            store: order.store || 'Lotorio - Tây Sơn',
+                            rating: overallRating.value,
+                            comment: document.getElementById('review-text').value,
+                            anonymous: document.getElementById('anonymous').checked,
+                            dishFeedback,
+                            timestamp: new Date().toLocaleString()
+                        };
+                        const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+                        reviews.push(review);
+                        localStorage.setItem('reviews', JSON.stringify(reviews));
+                        // Cập nhật trạng thái đơn hàng
+                        if (order.status !== 'hoan-thanh') {
+                            updateOrderStatus(orderId, 'hoan-thanh');
+                        }
+                        // Hiển thị modal
+                        const successModal = document.getElementById('success-modal');
+                        if (successModal) {
+                            successModal.classList.remove('hidden');
+                            console.log('Modal displayed successfully');
+                        } else {
+                            console.error('Element with ID "success-modal" not found');
+                        }
+                    } catch (error) {
+                        console.error('Error submitting review:', error);
+                        alert('Đã xảy ra lỗi khi gửi đánh giá. Vui lòng thử lại!');
+                    }
+                });
+            } else {
+                console.error('Element with ID "submit-btn" not found');
+            }
         });
 
         // Biến lưu feedback từng món
