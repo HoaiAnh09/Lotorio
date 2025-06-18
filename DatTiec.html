@@ -199,15 +199,7 @@ localStorage.setItem('selectedCombos', JSON.stringify(selectedCombos));
         }
 
         
-    const combos = JSON.parse(localStorage.getItem('selectedCombos')) || [];
-    console.log("Dữ liệu đã chọn:", combos);
-
-    // Ví dụ hiển thị ra
-    combos.forEach(c => {
-        const p = document.createElement('p');
-        p.textContent = `${c.name} - Số lượng: ${c.quantity}`;
-        document.body.appendChild(p);
-    });
+    
 
 
     </script>
