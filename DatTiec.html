@@ -16,15 +16,17 @@
         .qty-btn:active { background: #FFD700; color: #1a1a1a; }
     </style>
 </head>
-<body class="bg-white min-h-screen flex flex-col">
-    <!-- Navigation will be injected here -->
+<!-- Toast Notification -->
+<div id="toast-notify" class="fixed top-6 right-6 bg-blue-500 text-white px-4 py-2 rounded shadow-lg z-[9999] hidden">
+    Vui lòng chọn ít nhất 1 combo để đặt tiệc!
+</div>
+<body class="bg-white flex flex-col min-h-screen">
     <div id="nav-placeholder"></div>
-
-    <main class="flex-1 max-w-6xl mx-auto px-4 py-8">
+    <main class="grow max-w-6xl w-full mx-auto px-4 py-12">
         <h2 class="text-3xl font-bold text-center mb-8">COMBO TIỆC</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <!-- Combo 1 -->
-            <div class="combo-card">
+            <div class="combo-card hover:shadow-xl transition-all duration-300">
                 <img src="img/LO_set.jpg" alt="LO set" class="combo-img mx-auto mb-4">
                 <div class="font-bold text-lg mb-2">LO set : 10-15 người</div>
                 <div class="flex items-center justify-center gap-2 mb-2">
@@ -34,7 +36,7 @@
                 </div>
             </div>
             <!-- Combo 2 -->
-            <div class="combo-card">
+            <div class="combo-card hover:shadow-xl transition-all duration-300">
                 <img src="img/TO_set.jpg" alt="TO set" class="combo-img mx-auto mb-4">
                 <div class="font-bold text-lg mb-2">TO set : 15-20 người</div>
                 <div class="flex items-center justify-center gap-2 mb-2">
@@ -44,7 +46,7 @@
                 </div>
             </div>
             <!-- Combo 3 -->
-            <div class="combo-card">
+            <div class="combo-card hover:shadow-xl transition-all duration-300">
                 <img src="img/RI_set.jpg" alt="RI set" class="combo-img mx-auto mb-4">
                 <div class="font-bold text-lg mb-2">RI set : 20-25 người</div>
                 <div class="flex items-center justify-center gap-2 mb-2">
@@ -54,7 +56,7 @@
                 </div>
             </div>
             <!-- Combo 4 -->
-            <div class="combo-card">
+            <div class="combo-card hover:shadow-xl transition-all duration-300">
                 <img src="img/O_set.jpg" alt="O set" class="combo-img mx-auto mb-4">
                 <div class="font-bold text-lg mb-2">O set : 25-30 người</div>
                 <div class="flex items-center justify-center gap-2 mb-2">
@@ -64,10 +66,10 @@
                 </div>
             </div>
         </div>
-        <div class="text-center text-xl font-bold mb-4">Bạn cần thêm lựa chọn? Mời bạn tham khảo <a href="ThucDon.html" class="custom-yellow-text underline">Thực đơn</a> nhé!</div>
-        <div class="text-center text-2xl font-bold custom-yellow-text mb-8">Đặt tiệc ngay hôm nay để nhận ưu đãi lên đến 20% !!! <span class="inline-block align-middle"> <img src="img/discount.png" alt="Ưu đãi" class="inline h-6 ml-2"></span></div>
+        <div class="text-center text-xl font-bold my-6">Bạn cần thêm lựa chọn? Mời bạn tham khảo <a href="ThucDon.html" onclick="saveComboBeforeMenu()" class="custom-yellow-text underline">Thực đơn</a> nhé!</div>
+        <div class="text-center text-2xl font-bold custom-yellow-text my-6">Đặt tiệc ngay hôm nay để nhận ưu đãi lên đến 20% !!! <span class="inline-block align-middle"> <img src="img/discount.png" alt="Ưu đãi" class="inline h-6 ml-2"></span></div>
         <div class="flex justify-center mb-8">
-            <button class="custom-yellow text-black font-bold text-xl px-12 py-4 rounded-full shadow-lg hover:bg-yellow-400 transition" onclick="orderParty()">ĐẶT TIỆC</button>
+            <button class="custom-yellow text-black font-bold text-xl px-12 py-4 rounded-full shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300" onclick="orderParty()">ĐẶT TIỆC</button>
         </div>
         <div class="flex justify-end">
             <a href="javascript:void(0)" onclick="openPolicyModal()" class="text-gray-700 underline">Chính sách hoàn hủy</a>
@@ -141,9 +143,9 @@
 
         function orderParty() {
     if (comboQty.every(q => q === 0)) {
-        alert('Vui lòng chọn ít nhất 1 combo để đặt tiệc!');
-        return;
-    }
+    showToast("Vui lòng chọn ít nhất 1 combo để đặt tiệc!");
+    return;
+}
 
     // Lưu dữ liệu vào localStorage
 const comboData = [
@@ -199,6 +201,10 @@ localStorage.setItem('selectedCombos', JSON.stringify(selectedCombos));
     // Chuyển hướng sang trang thông tin tiệc
     window.location.href = 'ThongTinTiec.html';
 }
+function saveComboBeforeMenu() {
+    localStorage.setItem('selectedComboQty', JSON.stringify(comboQty));
+}
+
 
         function openPolicyModal() {
             document.getElementById('cancel-policy-modal').classList.remove('hidden');
@@ -206,6 +212,16 @@ localStorage.setItem('selectedCombos', JSON.stringify(selectedCombos));
         function closePolicyModal() {
             document.getElementById('cancel-policy-modal').classList.add('hidden');
         }
+
+function showToast(message) {
+    const toast = document.getElementById("toast-notify");
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+
+    setTimeout(() => {
+        toast.classList.add("hidden");
+    }, 5000); // ẩn sau 5 giây
+}
 
         
     
