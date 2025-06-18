@@ -3,64 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotorio - Đơn hàng</title>
+    <title>Lotorio - Danh sách đơn hàng</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-             font-family: 'Baloo2', sans-serif;
-        }
-        .custom-yellow {
-            background-color: #FFD700;
-            color: #1a1a1a;
-        }
-        .custom-yellow-text {
-            color: #FFD700;
-        }
-        .orders-container {
-            display: flex;
-            padding: 30px;
-        }
-        .sidebar {
-            width: 200px;
+            font-family: 'Baloo 2', sans-serif;
+            background: #f9f9f9;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+        .flex-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        .sidebar {
+            width: 250px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
         .sidebar button {
+            display: block;
+            width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             border: none;
-            background: #eee;
+            background: #f9f9f9;
+            border-radius: 8px;
             cursor: pointer;
             text-align: left;
-            border-radius: 8px;
+            font-size: 1rem;
         }
         .sidebar button.active {
             background: #ffd000;
             font-weight: bold;
         }
-        .orders-content {
+        .order-list {
             flex: 1;
-            padding-left: 30px;
-        }
-        .order-search {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .order-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
         }
         .order-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
+        }
+        .order-body {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .details {
+            flex: 1;
+        }
+        .price {
+            text-align: right;
+        }
+        .action-btn {
+            background: #ffd000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
         }
         .status {
             padding: 4px 10px;
@@ -75,135 +99,42 @@
             background: #ffe3a3;
             color: #aa6b00;
         }
-        .order-body {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .order-body img {
-            width: 80px;
-            border-radius: 8px;
-        }
-        .details {
-            flex: 1;
-        }
-        .price {
-            text-align: right;
-        }
-        .action-btn {
-            background: #ffd000;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .pagination button {
-            margin: 0 5px;
-            padding: 6px 10px;
-            border: none;
-            border-radius: 5px;
-        }
-        .pagination .active {
-            background: #ffd000;
-            font-weight: bold;
+        .custom-yellow-text {
+            color: #ffd000;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation will be injected here -->
-    <div id="nav-placeholder"></div>
-
-    <section class="orders-container">
-        <aside class="sidebar">
-            <button class="active" data-category="tat-ca">Tất cả</button>
-            <button data-category="cho-xac-nhan">Chờ xác nhận</button>
-            <button data-category="dang-giao">Đang giao</button>
-            <button data-category="hoan-thanh">Hoàn thành</button>
-        </aside>
-
-        <main class="orders-content">
-            <input type="text" class="order-search" placeholder="Tìm kiếm theo đơn, cửa hàng, món ăn...">
-            
-            <div id="order-items">
-                <!-- Order Item 1 - Giao hàng thành công -->
-                <div class="order-card" data-category="hoan-thanh" data-id="1">
-                    <div class="order-header">
-                        <strong>Lotorio - Tây Sơn</strong>
-                        <span class="status success">Giao hàng thành công</span>
-                    </div>
-                    <div class="order-body">
-                        <img src="img/my-y.jpg" alt="Mỳ Ý" class="w-20 h-20 object-cover rounded">
-                        <div class="details">
-                            <p>Mỳ Ý</p>
-                            <p>x1</p>
-                            <a href="ChiTietDH.html" class="custom-yellow-text hover:text-yellow-700 view-detail" data-id="1">Xem thêm</a>
-                        </div>
-                        <div class="price">
-                            <p>Tổng tiền: 45.000đ</p>
-                            <button class="action-btn" onclick="window.location.href='DanhGiaDH.html'">Đánh giá</button>
-                            <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Hỗ trợ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Order Item 2 - Đang giao -->
-                <div class="order-card" data-category="dang-giao" data-id="2">
-                    <div class="order-header">
-                        <strong>Lotorio - Thái Thịnh</strong>
-                        <span class="status shipping">Đang giao</span>
-                    </div>
-                    <div class="order-body">
-                        <img src="img/Burger.png" alt="Burger" class="w-20 h-20 object-cover rounded">
-                        <div class="details">
-                            <p>Hamburger phô mai</p>
-                            <p>x1</p>
-                            <a href="ChiTietDH.html" class="custom-yellow-text hover:text-yellow-700 view-detail" data-id="2">Xem thêm</a>
-                        </div>
-                        <div class="price">
-                            <p>Tổng tiền: 50.000đ</p>
-                            <button class="action-btn" onclick="window.location.href='DanhGiaDH.html'">Đánh giá</button>
-                            <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Hỗ trợ</button>
-                        </div>
-                    </div>
-                </div>
+    <main class="flex-container">
+        <div id="nav-placeholder"></div>
+        <div class="container">
+            <div class="sidebar">
+                <button class="active" data-category="tat-ca">Tất cả</button>
+                <button data-category="cho-xac-nhan">Chờ xác nhận</button>
+                <button data-category="dang-giao">Đang giao</button>
+                <button data-category="hoan-thanh">Hoàn thành</button>
             </div>
-
-            <!-- Phân trang -->
-            <!-- <div class="pagination">
-                <button>«</button>
-                <button class="active">1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>»</button>
-            </div> -->
-        </main>
-    </section>
-
-    <!-- Footer will be injected here -->
-    <div id="footer-placeholder"></div>
+            <div class="order-list" id="order-items"></div>
+        </div>
+        <div id="footer-placeholder"></div>
+    </main>
 
     <script>
-        // Load nav and footer using fetch
         fetch('nav.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('nav-placeholder').innerHTML = data;
-
-        // Đánh dấu nav hiện tại
-            const path = window.location.pathname.split('/').pop();
-            const navLinks = document.querySelectorAll('#nav-placeholder nav a');
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === path) {
-                    link.classList.add('font-bold', 'custom-yellow-text');
-                } else {
-                    link.classList.remove('font-bold', 'custom-yellow-text');
-                }
-            });
-        });
+                const path = window.location.pathname.split('/').pop();
+                const navLinks = document.querySelectorAll('#nav-placeholder nav a');
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === path) {
+                        link.classList.add('font-bold', 'text-yellow-400');
+                    } else {
+                        link.classList.remove('font-bold', 'text-yellow-400');
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading nav:', error));
 
         fetch('footer.html')
             .then(response => response.text())
@@ -212,82 +143,48 @@
             })
             .catch(error => console.error('Error loading footer:', error));
 
-        // Filter order items based on sidebar selection
-        document.querySelectorAll('.sidebar button').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                const category = button.getAttribute('data-category') || 'tat-ca';
-                const orderItems = document.querySelectorAll('.order-card');
-
-                orderItems.forEach(item => {
-                    const itemCategory = item.getAttribute('data-category');
-                    if (category === 'tat-ca' || itemCategory === category) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // Set default to show all items on page load
-        document.querySelectorAll('.order-card').forEach(item => item.style.display = 'block');
-
-        // Navigate to order detail page with ID
-        document.querySelectorAll('.view-detail').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const orderId = link.getAttribute('data-id');
-                window.location.href = `ChiTietDH.html?id=${orderId}`;
-            });
-        });
-        
         document.addEventListener('DOMContentLoaded', function() {
             const orders = JSON.parse(localStorage.getItem('orders') || '[]');
             const orderItems = document.getElementById('order-items');
             let html = '';
             if (orders.length === 0) {
-                html = '<p>Bạn chưa có đơn hàng nào.</p>';
+                html = '<p class="text-center text-lg">Bạn chưa có đơn hàng nào.</p>';
             } else {
                 orders.forEach(order => {
+                    const firstItemImage = order.items[0]?.image || 'https://via.placeholder.com/80';
+                    const statusClass = order.status === 'hoan-thanh' ? 'success' : (order.status === 'dang-giao' ? 'shipping' : '');
+                    const statusText = order.status === 'hoan-thanh' ? 'Giao hàng thành công' : (order.status === 'dang-giao' ? 'Đang giao' : 'Chờ xác nhận');
                     html += `
-                    <div class="order-card" data-category="${order.status}" data-id="${order.id}">
-                        <div class="order-header">
-                            <strong>Lotorio - Tây Sơn</strong>
-                            <span class="status ${order.status === 'hoan-thanh' ? 'success' : (order.status === 'dang-giao' ? 'shipping' : '')}">
-                                ${order.status === 'hoan-thanh' ? 'Giao hàng thành công' : (order.status === 'dang-giao' ? 'Đang giao' : 'Chờ xác nhận')}
-                            </span>
-                        </div>
-                        <div class="order-body">
-                            <img src="https://via.placeholder.com/80" alt="Món ăn" class="w-20 h-20 object-cover rounded">
-                            <div class="details">
-                                <p>${order.items.map(i => i.name).join(', ')}</p>
-                                <p>x${order.items.reduce((sum, i) => sum + i.qty, 0)}</p>
-                                <a href="ChiTietDH.html?id=${order.id}" class="custom-yellow-text hover:text-yellow-700 view-detail" data-id="${order.id}">Xem thêm</a>
+                        <div class="order-card" data-category="${order.status}" data-id="${order.id}">
+                            <div class="order-header">
+                                <strong>Lotorio - Tây Sơn</strong>
+                                <span class="status ${statusClass}">${statusText}</span>
                             </div>
-                            <div class="price">
-                                <p>Tổng tiền: ${order.total.toLocaleString()}đ</p>
-                                <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Hỗ trợ</button>
-                                <button class="action-btn" onclick="window.location.href='DanhGiaDH.html'">Đánh giá</button>
+                            <div class="order-body">
+                                <img src="${firstItemImage}" alt="Món ăn" class="w-20 h-20 object-cover rounded">
+                                <div class="details">
+                                    <p>${order.items.map(i => i.name).join(', ')}</p>
+                                    <p>x${order.items.reduce((sum, i) => sum + i.qty, 0)}</p>
+                                    <a href="ChiTietDH.html?id=${order.id}" class="custom-yellow-text hover:text-yellow-700">Xem thêm</a>
+                                </div>
+                                <div class="price">
+                                    <p>Tổng tiền: ${order.total.toLocaleString()}đ</p>
+                                    <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Hỗ trợ</button>
+                                    <button class="action-btn" onclick="window.location.href='DanhGiaDH.html?id=${order.id}'">Đánh giá</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
                 });
             }
             orderItems.innerHTML = html;
 
-            // Gán lại sự kiện cho sidebar sau khi render
             document.querySelectorAll('.sidebar button').forEach(button => {
                 button.addEventListener('click', () => {
                     document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
-
                     const category = button.getAttribute('data-category') || 'tat-ca';
                     const orderItems = document.querySelectorAll('.order-card');
-
                     orderItems.forEach(item => {
                         const itemCategory = item.getAttribute('data-category');
                         if (category === 'tat-ca' || itemCategory === category) {

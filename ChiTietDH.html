@@ -5,125 +5,237 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lotorio - Chi tiết đơn hàng</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
         body {
-        font-family: 'Baloo2', sans-serif;            background: #f9f9f9;
-        }
-        .detail-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            font-family: 'Baloo 2', sans-serif;
+            background: #f9f9f9;
             display: flex;
-            gap: 20px;
+            flex-direction: column;
+            min-height: 100vh;
         }
+
+        .flex-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #footer-placeholder {
+            width: 100%;
+        }
+
+        .detail-container {
+            max-width: 95%;
+            margin: 0 auto;
+            padding: 30px;
+            display: flex;
+            gap: 30px;
+        }
+
         .back-link {
-            color: #666;
+            color: #333;
             text-decoration: none;
-            margin-bottom: 10px;
-            display: inline-block;
+            font-size: 1.3rem;
+            background: #ffd000;
+            padding: 12px 24px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
         }
+
+        .back-link:hover {
+            background: #e6b800;
+        }
+
+        .store-title-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
         .store-title {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: bold;
+        }
+
+        .order-items {
+            flex: 1.5;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .items-scroll-container {
+            max-height: 300px;
+            overflow-y: auto;
             margin-bottom: 20px;
         }
-        .order-items {
-            flex: 2;
-            background: #fff;
-            padding: 15px;
+
+        .items-scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .items-scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
             border-radius: 10px;
         }
+
+        .items-scroll-container::-webkit-scrollbar-thumb {
+            background: #ffd000;
+            border-radius: 10px;
+        }
+
+        .items-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #e6b800;
+        }
+
         .order-item {
             display: flex;
             align-items: center;
-            padding: 10px 0;
+            padding: 10px 0; /* Giảm từ 15px xuống 10px */
             border-bottom: 1px solid #ddd;
         }
+
         .order-item img {
-            width: 80px;
+            width: 80px; /* Giảm từ 120px xuống 80px */
             height: 80px;
             object-fit: cover;
-            border-radius: 8px;
-            margin-right: 20px;
+            border-radius: 10px;
+            margin-right: 20px; /* Giảm từ 30px xuống 20px */
         }
+
         .order-details {
             flex: 1;
+            font-size: 1rem; /* Giảm từ 1.2rem xuống 1rem */
         }
+
         .order-price {
             font-weight: bold;
-            margin-left: 20px;
+            margin-left: 30px;
+            font-size: 1rem; /* Giảm từ 1.2rem xuống 1rem */
         }
+
         .shipping-info {
-            flex: 1;
-            padding: 15px;
+            flex: 1.2;
+            padding: 25px;
+            font-size: 1.2rem;
         }
+
         .info-block {
             background: #fff3cd;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
         }
+
         .action-btn {
             background: #ffd000;
             border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
+            padding: 15px 25px;
+            border-radius: 10px;
             cursor: pointer;
             width: 100%;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
+
+        .action-btn:hover {
+            background: #e6b800;
+        }
+
         .total-section {
             flex: 2;
             background: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+
         .total-item {
             display: flex;
             justify-content: space-between;
-            padding: 5px 0;
+            padding: 8px 0;
+            font-size: 1.2rem;
         }
+
         .total-amount {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 1rem;
+            display: inline-block;
+        }
+
+        .status.success {
+            background: #c8f7c5;
+            color: green;
+        }
+
+        .status.shipping {
+            background: #ffe3a3;
+            color: #aa6b00;
+        }
+
+        .status.pending {
+            background: #e0e0e0;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation will be injected here -->
-    <div id="nav-placeholder"></div>
+    <main class="flex-container">
+        <!-- Navigation will be injected here -->
+        <div id="nav-placeholder"></div>
 
-    <div class="detail-container" id="order-detail-container">
-        <a href="DonHang.html" class="back-link">← Chi tiết đơn hàng</a>
-    
-        <!-- Order Items (Cột trái) -->
-        <div class="order-items" id="order-items"></div>
+        <div class="detail-container" id="order-detail-container">
+            <!-- Order Items (Cột trái) -->
+            <div class="order-items">
+                <div class="store-title-container">
+                    <div class="store-title" id="store-title">Lotorio - Tây Sơn</div>
+                    <a href="DonHang.html" class="back-link">← Quay lại</a>
+                </div>
+                <div id="order-status"></div>
+                <div class="items-scroll-container">
+                    <div id="order-items"></div>
+                </div>
+                <div class="total-section" id="total-section"></div>
+            </div>
 
-        <!-- Shipping Info (Cột phải) -->
-        <div class="shipping-info">
-            <div class="info-block">
-                <p><strong>Địa chỉ giao hàng:</strong> <span id="address"></span></p>
+            <!-- Shipping Info (Cột phải) -->
+            <div class="shipping-info">
+                <div class="info-block">
+                    <p><strong>Địa chỉ giao hàng:</strong> <span id="address"></span></p>
+                </div>
+                <div class="info-block">
+                    <p><strong>Thông tin người nhận:</strong> <span id="receiver"></span></p>
+                    <p><strong>SĐT người nhận:</strong> <span id="phone"></span></p>
+                </div>
+                <div class="info-block">
+                    <p><strong>Thời gian đặt hàng:</strong> <span id="order-time"></span></p>
+                    <p><strong>Phương thức thanh toán:</strong> <span id="payment-method"></span></p>
+                </div>
+                <button class="action-btn" onclick="window.location.href='HoTroDonHang.html'">Liên hệ cửa hàng</button>
             </div>
-            <div class="info-block">
-                <p><strong>Thông tin người nhận:</strong> <span id="receiver"></span></p>
-                <p><strong>SĐT người nhận:</strong> <span id="phone"></span></p>
-            </div>
-            <div class="info-block">
-                <p><strong>Thời gian chuẩn bị:</strong> <span id="prep-time"></span></p>
-                <p><strong>Đơn hàng đang được giao:</strong> <span id="shipping-time"></span></p>
-                <p><strong>Nhận hàng tại nhà:</strong> <span id="delivery-time"></span></p>
-                <p><strong>Đơn hàng đã được đặt:</strong> <span id="order-time"></span></p>
-            </div>
-            
-            <button class="action-btn">Liên hệ cửa hàng</button>
         </div>
+    </main>
 
-        
-    </div>
+    <!-- Footer will be injected here -->
+    <div id="footer-placeholder"></div>
 
     <script>
         // Load nav and footer using fetch
@@ -131,6 +243,16 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById('nav-placeholder').innerHTML = data;
+                // Đánh dấu nav hiện tại
+                const path = window.location.pathname.split('/').pop();
+                const navLinks = document.querySelectorAll('#nav-placeholder nav a');
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === path) {
+                        link.classList.add('font-bold', 'text-yellow-400');
+                    } else {
+                        link.classList.remove('font-bold', 'text-yellow-400');
+                    }
+                });
             })
             .catch(error => console.error('Error loading nav:', error));
 
@@ -141,58 +263,30 @@
             })
             .catch(error => console.error('Error loading footer:', error));
 
-        // Sample order data (replace with your data source, e.g., API or database)
-        const orders = {
-            1: {
-                store: "Lotorio - Tây Sơn",
-                items: [
-                    { name: "Burger bò phô mai", qty: 1, price: 69000, image: "https://via.placeholder.com/80" },
-                    { name: "Burger bò đậm", qty: 1, price: 59000, image: "https://via.placeholder.com/80" },
-                    { name: "Pizza truyền thống", qty: 1, price: 109000, image: "https://via.placeholder.com/80" },
-                    { name: "Combo gà khoai", qty: 1, price: 99000, image: "https://via.placeholder.com/80" },
-                    { name: "Cacao nóng", qty: 1, price: 39000, image: "https://via.placeholder.com/80" },
-                ],
-                address: "175 Tây Sơn, Phố Tây Sơn, Đống Đa, Hà Nội, 100000, Việt Nam",
-                receiver: "[Tên người nhận 1]",
-                phone: "[Số điện thoại 1]",
-                prepTime: "4 Thơs",
-                shippingTime: "11:20",
-                deliveryTime: "4 Thơs",
-                orderTime: "10:30",
-                subtotal: 434000,
-                shippingFee: 10000,
-                discount: -10000,
-                total: 434000
-            },
-            2: {
-                store: "Lotorio - Thái Thịnh",
-                items: [
-                    { name: "Hamburger phô mai", qty: 1, price: 50000, image: "https://via.placeholder.com/80" },
-                ],
-                address: "123 Thái Thịnh, Đống Đa, Hà Nội, 100000, Việt Nam",
-                receiver: "[Tên người nhận 2]",
-                phone: "[Số điện thoại 2]",
-                prepTime: "3 Thơs",
-                shippingTime: "10:30",
-                deliveryTime: "3 Thơs",
-                orderTime: "3 Thơs",
-                subtotal: 50000,
-                shippingFee: 10000,
-                discount: -5000,
-                total: 55000
-            }
-        };
-
         // Get order ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const orderId = urlParams.get('id');
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const order = orders.find(o => o.id == orderId);
 
-        // Display order details
-        if (orderId && orders[orderId]) {
-            const order = orders[orderId];
+            const orderDetailContainer = document.getElementById('order-detail-container');
+            if (!order) {
+                orderDetailContainer.innerHTML = '<p class="text-xl text-center">Không tìm thấy đơn hàng.</p>';
+                return;
+            }
 
             // Set store title
-            document.getElementById('store-title').textContent = order.store;
+            document.getElementById('store-title').textContent = 'Lotorio - Tây Sơn';
+
+            // Set order status
+            const statusText = order.status === 'hoan-thanh' ? 'Giao hàng thành công' :
+                              order.status === 'dang-giao' ? 'Đang giao' : 'Chờ xác nhận';
+            const statusClass = order.status === 'hoan-thanh' ? 'success' :
+                               order.status === 'dang-giao' ? 'shipping' : 'pending';
+            document.getElementById('order-status').innerHTML = `
+                <span class="status ${statusClass}">${statusText}</span>
+            `;
 
             // Populate order items
             const itemsContainer = document.getElementById('order-items');
@@ -200,29 +294,48 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'order-item';
                 itemDiv.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}">
+                    <img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}">
                     <div class="order-details">
-                        <p>${item.name}</p>
+                        <p class="font-semibold">${item.name}</p>
                         <p>x${item.qty}</p>
                     </div>
-                    <div class="order-price">${item.price.toLocaleString('vi-VN')}đ</div>
+                    <div class="order-price">${(item.price * item.qty).toLocaleString('vi-VN')}đ</div>
                 `;
                 itemsContainer.appendChild(itemDiv);
             });
 
+            // Populate total section
+            const shippingFee = order.shippingFee || 10000;
+            const discount = order.discount || 0;
+            const subtotal = order.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+            const total = order.total || subtotal + shippingFee - discount;
+            document.getElementById('total-section').innerHTML = `
+                <div class="total-item">
+                    <span>Tạm tính</span>
+                    <span>${subtotal.toLocaleString('vi-VN')}đ</span>
+                </div>
+                <div class="total-item">
+                    <span>Phí giao hàng</span>
+                    <span>${shippingFee.toLocaleString('vi-VN')}đ</span>
+                </div>
+                ${discount > 0 ? `
+                <div class="total-item">
+                    <span>Ưu đãi</span>
+                    <span>-${discount.toLocaleString('vi-VN')}đ</span>
+                </div>` : ''}
+                <div class="total-item total-amount">
+                    <span>Tổng cộng</span>
+                    <span>${total.toLocaleString('vi-VN')}đ</span>
+                </div>
+            `;
+
             // Populate shipping info
-            document.getElementById('address').textContent = order.address;
-            document.getElementById('receiver').textContent = order.receiver;
-            document.getElementById('phone').textContent = order.phone;
-            document.getElementById('prep-time').textContent = order.prepTime;
-            document.getElementById('shipping-time').textContent = order.shippingTime;
-            document.getElementById('delivery-time').textContent = order.deliveryTime;
-            document.getElementById('order-time').textContent = order.orderTime;
-            document.getElementById('subtotal').textContent = order.subtotal.toLocaleString('vi-VN') + 'đ';
-            document.getElementById('total').textContent = order.total.toLocaleString('vi-VN') + 'đ';
-        } else {
-            document.getElementById('order-detail-container').innerHTML = '<p>Không tìm thấy đơn hàng.</p>';
-        }
+            document.getElementById('address').textContent = order.customer.address;
+            document.getElementById('receiver').textContent = order.customer.name;
+            document.getElementById('phone').textContent = order.customer.phone;
+            document.getElementById('order-time').textContent = order.createdAt;
+            document.getElementById('payment-method').textContent = order.payment === 'cash' ? 'Tiền mặt' : 'Chuyển khoản';
+        });
     </script>
 </body>
 </html>
