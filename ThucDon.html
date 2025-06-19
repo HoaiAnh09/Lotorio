@@ -276,10 +276,25 @@
         }
 
         function removeFromCart(idx) {
-            cart.splice(idx, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCart();
-        }
+    itemToDeleteIndex = idx;
+    document.getElementById('confirm-delete-modal').classList.remove('hidden');
+    document.getElementById('confirm-delete').addEventListener('click', function () {
+    if (itemToDeleteIndex !== null) {
+        cart.splice(itemToDeleteIndex, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+        itemToDeleteIndex = null;
+    }
+    document.getElementById('confirm-delete-modal').classList.add('hidden');
+});
+
+document.getElementById('cancel-delete').addEventListener('click', function () {
+    itemToDeleteIndex = null;
+    document.getElementById('confirm-delete-modal').classList.add('hidden');
+});
+
+}
+
 
         function toggleCart() {
             document.getElementById('cart-sidebar').classList.toggle('hidden');
@@ -299,5 +314,19 @@
             localStorage.setItem('cart', JSON.stringify(cart));
         });
     </script>
+    <!-- Modal xác nhận xóa -->
+<div id="confirm-delete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p7- rounded-2xl text-center w-80">
+    <div class="flex items-center justify-center mb-4">
+      <span class="text-yellow-500 text-3xl mr-2">⚠️</span>
+      <h2 class="text-xl font-bold">Xóa món khỏi giỏ hàng ?</h2>
+    </div>
+    <div class="flex justify-around mt-6">
+      <button id="cancel-delete" class="bg-gray-200 text-black px-4 py-2 rounded">Không</button>
+      <button id="confirm-delete" class="bg-yellow-400 text-black px-4 py-2 rounded font-semibold">Có</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
