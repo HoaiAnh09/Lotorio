@@ -5,19 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Thanh toán - Lotorio</title>
   <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-             font-family: 'Baloo2', sans-serif;
-        }
-        .custom-yellow-text {
-            color: #FFD700;
-        }
-    </style>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Baloo2', sans-serif;
+    }
+    .custom-yellow-text {
+      color: #FFD700;
+    }
+    #success-modal .modal-content {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      animation: fade-in-down 0.4s ease-out;
+      position: relative;
+    }
+    @keyframes fade-in-down {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body class="bg-white">
-    <div id="nav-placeholder"></div>
-
+  <div id="nav-placeholder"></div>
 
   <div class="max-w-6xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
     <h1 class="text-3xl font-bold mb-6 text-black flex items-center">
@@ -59,59 +73,58 @@
 
     <!-- Tổng tiền & nút hoàn tất -->
     <div class="flex justify-between items-center mt-10">
-    <div class="bg-yellow-500 text-black-700 text-2xl font-extrabold px-6 py-4 rounded-lg shadow-xl border-4 border-yellow-600">
-  Tổng tiền: <span id="total-price">0 đ</span>
-</div>
-
+      <div class="bg-yellow-500 text-black-700 text-2xl font-extrabold px-6 py-4 rounded-lg shadow-xl border-4 border-yellow-600">
+        Tổng tiền: <span id="total-price">0 đ</span>
+      </div>
       <button onclick="showSuccessModal()" class="bg-yellow-400 text-black font-bold px-6 py-3 rounded-lg shadow hover:bg-yellow-300 transition">Hoàn tất</button>
     </div>
   </div>
 
   <!-- Modal thông báo đặt hàng -->
-<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
-  <div class="bg-white p-6 rounded-xl shadow-lg text-center max-w-lg w-full">
-    <h2 class="text-3xl font-bold text-green-600 mb-4">🎉 Đặt hàng thành công!</h2>
-    <p class="text-lg text-gray-700 mb-5">Cảm ơn bạn đã đặt hàng tại <strong>Lotorio</strong>. Chúng tôi sẽ xử lý đơn của bạn ngay.</p>
-    <button id="go-to-orders" class="mt-4 px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-lg text-lg">
-      Xem đơn hàng
-    </button>
-  </div>
-</div>
-
-
-  <!-- Modal xác nhận thoát -->
-<div id="exitModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-  <div class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-lg text-center">
-    <h2 class="text-xl font-bold mb-4 text-gray-800">Bạn có chắc chắn muốn thoát khỏi trang thanh toán?</h2>
-    <div class="flex justify-center gap-4 mt-6">
-      <button onclick="hideModal()" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold">Hủy</button>
-      <button onclick="confirmLeave()" class="px-4 py-2 rounded bg-yellow-400 hover:bg-yellow-300 text-black font-semibold" style="background-color: #FFD700;">
-        Xác nhận
-      </button>
+  <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+    <div class="modal-content">
+      <button id="close-modal" class="absolute top-3 right-3 text-2xl font-bold text-gray-400 hover:text-red-500">×</button>
+      <h2 class="text-3xl font-bold text-green-600 mb-4">✅ Đặt hàng thành công!</h2>
+      <p class="text-lg text-gray-700 mb-5">Cảm ơn bạn đã đặt hàng tại <strong>Lotorio</strong>. Chúng tôi sẽ xử lý đơn của bạn ngay.</p>
+      <div class="flex justify-center gap-4">
+        <button id="go-to-orders" class="px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-lg text-lg">
+          Xem đơn hàng
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
+  <!-- Modal xác nhận thoát -->
+  <div id="exitModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-lg text-center">
+      <h2 class="text-xl font-bold mb-4 text-gray-800">Bạn có chắc chắn muốn thoát khỏi trang thanh toán?</h2>
+      <div class="flex justify-center gap-4 mt-6">
+        <button onclick="hideModal()" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold">Hủy</button>
+        <button onclick="confirmLeave()" class="px-4 py-2 rounded bg-yellow-400 hover:bg-yellow-300 text-black font-semibold" style="background-color: #FFD700;">
+          Xác nhận
+        </button>
+      </div>
+    </div>
+  </div>
 
-
-    <div id="footer-placeholder"></div>
+  <div id="footer-placeholder"></div>
 
   <script>
     fetch('nav.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading nav:', error));
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('nav-placeholder').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading nav:', error));
 
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading footer:', error));
-    
-            const data = JSON.parse(localStorage.getItem('pendingPayment') || '{}');
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading footer:', error));
+
+    const data = JSON.parse(localStorage.getItem('pendingPayment') || '{}');
 
     if (!data || !data.items || data.items.length === 0) {
       document.body.innerHTML = '<div class="text-center mt-10 text-red-600 font-bold">Không có thông tin thanh toán.</div>';
@@ -128,16 +141,15 @@
         const itemEl = document.createElement('li');
         itemEl.className = 'flex justify-between items-center py-3';
         itemEl.innerHTML = `
-  <div class="flex items-center space-x-4">
-    <img src="${item.image || 'img/default.jpg'}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
-    <div>
-      <p class="font-semibold">${item.name}</p>
-      <p class="text-sm text-gray-500">Số lượng: ${item.qty}</p>
-    </div>
-  </div>
-  <div class="font-semibold">${(item.price * item.qty).toLocaleString()} đ</div>
-`;
-
+          <div class="flex items-center space-x-4">
+            <img src="${item.image || 'img/default.jpg'}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+            <div>
+              <p class="font-semibold">${item.name}</p>
+              <p class="text-sm text-gray-500">Số lượng: ${item.qty}</p>
+            </div>
+          </div>
+          <div class="font-semibold">${(item.price * item.qty).toLocaleString()} đ</div>
+        `;
         itemsContainer.appendChild(itemEl);
       });
 
@@ -150,29 +162,34 @@
       phoneEl.textContent = data.customer?.phone || '';
       totalEl.textContent = data.total?.toLocaleString() + ' đ';
     }
+
     // quay lại trang dathang
     function confirmExit() {
-  document.getElementById('exitModal').classList.remove('hidden');
-}
+      document.getElementById('exitModal').classList.remove('hidden');
+    }
 
-function hideModal() {
-  document.getElementById('exitModal').classList.add('hidden');
-}
+    function hideModal() {
+      document.getElementById('exitModal').classList.add('hidden');
+    }
 
-function confirmLeave() {
-  window.location.href = "DatHang.html";
-}
-function showSuccessModal() {
-  document.getElementById('success-modal').classList.remove('hidden');
-  // Xóa dữ liệu đã thanh toán để tránh hiển thị lại
-  localStorage.removeItem('pendingPayment');
-}
+    function confirmLeave() {
+      window.location.href = "DatHang.html";
+    }
 
-document.getElementById('go-to-orders').addEventListener('click', () => {
-  window.location.href = 'DonHang.html';
-});
+    function showSuccessModal() {
+      document.getElementById('success-modal').classList.remove('hidden');
+      // Xóa dữ liệu đã thanh toán để tránh hiển thị lại
+      localStorage.removeItem('pendingPayment');
+    }
 
+    document.getElementById('go-to-orders').addEventListener('click', () => {
+      window.location.href = 'DonHang.html';
+    });
 
+    // Add event listener for close modal button
+    document.getElementById('close-modal').addEventListener('click', function() {
+      window.location.href = 'ThucDon.html';
+    });
   </script>
 </body>
 </html>
